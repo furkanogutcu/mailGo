@@ -1,6 +1,6 @@
 {
   "name": "mailgo-server",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "app.js",
   "scripts": {
@@ -9,6 +9,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^8.15.0",
     "nodemon": "^2.0.16"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "http-status": "^1.5.2"
   }
 }
