@@ -5,9 +5,9 @@ const authentication = (req, res, next) => {
     const token = req.headers?.authorization?.split(' ')[1];
     if (token == null) return res.status(httpStatus.UNAUTHORIZED).send({ message: 'Access denied' });
 
-    JWT.verify(token, process.env.JWT_ACCESS_SECRET, (err, user) => {
+    JWT.verify(token, process.env.JWT_ACCESS_SECRET, (err, data) => {
         if (err) return res.status(httpStatus.FORBIDDEN).send({ message: 'Invalid token' });
-        req.user = user;
+        req.user = data.user;
         next();
     });
 };

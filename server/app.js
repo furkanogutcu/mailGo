@@ -6,7 +6,7 @@ const loaders = require('./loaders');
 
 const routes = require('./routes');
 
-const authentication = require('./middlewares/authenticate');
+const authentication = require('./middlewares/authentication');
 
 config();
 loaders();
