@@ -24,7 +24,7 @@ const userSchema = new Mongoose.Schema({
         type: String,
         required: true,
         minlength: 6,
-        maxlength: 255
+        maxlength: 100
     },
     roles: [{
         type: Mongoose.Schema.Types.ObjectId,
