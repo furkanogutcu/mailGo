@@ -3,6 +3,7 @@ const authService = require('../services/auth');
 const User = require('../models/user');
 const passwordHelper = require('../helpers/password');
 const jwtHelper = require('../helpers/jwt');
+const UserRole = require('../models/userRole');
 
 const register = (req, res) => {
     //Kullanıcı parolasını hashle
@@ -19,7 +20,12 @@ const register = (req, res) => {
     //Kullanıcıyı kaydet
     authService.register(user)
         .then((user) => {
-            res.status(httpStatus.CREATED).json(createReturnUser(user));
+            createReturnUser(user)
+                .then((user) => {
+                    return res.status(httpStatus.CREATED).json(user);
+                }).catch(() => {
+                    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Internal server error' });
+                });
         }).catch((err) => {
             return res.status(err.code || httpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message || 'Internal server error' });
         });
@@ -29,7 +35,12 @@ const login = (req, res) => {
     //Kullanıcıyı bul
     authService.login(req.body.email, req.body.password)
         .then((user) => {
-            return res.status(httpStatus.OK).json(createReturnUser(user));
+            createReturnUser(user)
+                .then((user) => {
+                    return res.status(httpStatus.OK).json(user);
+                }).catch(() => {
+                    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Internal server error' });
+                });
         }).catch((err) => {
             return res.status(err.code || httpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message || 'Internal server error' });
         });
@@ -40,13 +51,20 @@ const createReturnUser = (user) => {
         ...user.toObject()
     };
     delete tempUser.password;
-    return {
-        ...tempUser,
-        tokens: {
-            access_token: jwtHelper.generateAccessToken(tempUser),
-            refresh_token: jwtHelper.generateRefreshToken(tempUser)
-        }
-    };
+
+    //Tüm kullanıcı rollerini getir ve token içerisine rol adlarını ekle
+    return UserRole.find({ '_id': { $in: user.roles } })
+        .then((roles) => {
+            tempUser.roles = roles.map((role) => role.name);
+            return {
+                ...tempUser,
+                roles: tempUser.roles,
+                tokens: {
+                    access_token: jwtHelper.generateAccessToken(tempUser),
+                    refresh_token: jwtHelper.generateRefreshToken(tempUser)
+                }
+            };
+        });
 };
 
 module.exports = {
