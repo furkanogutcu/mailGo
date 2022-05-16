@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const authService = require('../services/auth');
 const User = require('../models/user');
 const passwordHelper = require('../helpers/password');
+const jwtHelper = require('../helpers/jwt');
 
 const register = (req, res) => {
     //Kullanıcı parolasını hashle
@@ -17,21 +18,35 @@ const register = (req, res) => {
 
     //Kullanıcıyı kaydet
     authService.register(user)
-        .then((result) => {
-            res.status(httpStatus.CREATED).json(result);
+        .then((user) => {
+            res.status(httpStatus.CREATED).json(createReturnUser(user));
         }).catch((err) => {
-            return res.status(err.code).json({ message: err.message });
+            return res.status(err.code || httpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message || 'Internal server error' });
         });
 };
 
 const login = (req, res) => {
     //Kullanıcıyı bul
     authService.login(req.body.email, req.body.password)
-        .then((result) => {
-            return res.status(httpStatus.OK).json(result);
+        .then((user) => {
+            return res.status(httpStatus.OK).json(createReturnUser(user));
         }).catch((err) => {
-            return res.status(err.code).json({ message: err.message });
+            return res.status(err.code || httpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message || 'Internal server error' });
         });
+};
+
+const createReturnUser = (user) => {
+    const tempUser = {
+        ...user.toObject()
+    };
+    delete tempUser.password;
+    return {
+        ...tempUser,
+        tokens: {
+            access_token: jwtHelper.generateAccessToken(tempUser),
+            refresh_token: jwtHelper.generateRefreshToken(tempUser)
+        }
+    };
 };
 
 module.exports = {
