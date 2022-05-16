@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/category');
+const validate = require('../middlewares/validate');    // validate middleware
+const schemas = require('../validations/category');     // validation schemas
 
 router.get("/getAll", controller.getAll);
 router.get("/getById/:categoryId", controller.getById);
-router.post("/add", controller.add);
-router.post("/update", controller.update);
-router.post("/delete", controller.deleteById);
+router.route("/add").post(validate(schemas.addValidation), controller.add);
+router.route("/update").post(validate(schemas.updateValidation), controller.update);
+router.route("/delete").post(validate(schemas.deleteValidation), controller.deleteById);
 
 module.exports = router;
