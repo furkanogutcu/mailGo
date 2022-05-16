@@ -5,6 +5,7 @@ const addValidation = Joi.object({
     lastName: Joi.string().required().min(3).max(50),
     email: Joi.string().required().min(3).max(50),
     isSubscribed: Joi.boolean(),
+    unSubscribedAt: Joi.forbidden(),
     analysis: Joi.object({
         totalCampaignClicks: Joi.number().min(0),
         totalNumberOfEmailSSent: Joi.number().min(0)
@@ -18,7 +19,11 @@ const updateValidation = Joi.object({
     lastName: Joi.string().min(3).max(50),
     email: Joi.string().min(3).max(50),
     isSubscribed: Joi.boolean(),
-    unSubscribedAt: Joi.boolean().min(Joi.ref('createdAt')).max(Date.now()),
+    unSubscribedAt: Joi.date().when('isSubscribed', {
+        is: true,
+        then: Joi.forbidden(),
+        otherwise: Joi.optional()
+    }).max(Date.now()),
     analysis: Joi.object({
         totalCampaignClicks: Joi.number().min(0),
         totalNumberOfEmailSSent: Joi.number().min(0)

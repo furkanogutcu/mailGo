@@ -27,7 +27,7 @@ const subscriberSchema = new Mongoose.Schema({
     },
     unSubscribedAt: {
         type: Date,
-        required: false      
+        required: false
     },
     analysis: {
         totalCampaignClicks: {
