@@ -1,6 +1,7 @@
 const Joi = require('joi');
 
 const updateValidation = Joi.object({
+    _id: Joi.string().required(),
     firstName: Joi.string().min(3).max(50),
     lastName: Joi.string().min(3).max(50),
     email: Joi.string().email().min(6).max(255),
