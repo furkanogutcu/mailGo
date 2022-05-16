@@ -2,8 +2,11 @@ const express = require('express');
 const app = express();
 
 const config = require('./config');
+const loaders = require('./loaders');
 
 config();
+loaders();
+
 app.use(express.json());
 
 app.get('/', (req, res) => {
