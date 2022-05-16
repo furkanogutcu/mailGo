@@ -4,6 +4,8 @@ const app = express();
 const config = require('./config');
 const loaders = require('./loaders');
 
+const routes = require('./routes');
+
 config();
 loaders();
 
@@ -13,7 +15,11 @@ app.get('/', (req, res) => {
     res.send('Welcome to mailGo API');
 });
 
+app.use('/api/category', routes.categoryRoutes);
+app.use('/api/campaign', routes.campaignRoutes);
+app.use('/api/subscriber', routes.subscriberRoutes);
+
 const port = process.env.APP_PORT || 3000;
-app.listen(port, () =>{
+app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
