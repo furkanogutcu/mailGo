@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/campaign');
 const validate = require('../middlewares/validate');    // validate middleware
-const schemas = require('../validations/category');     // validation schemas
+const schemas = require('../validations/campaign');     // validation schemas
 const authorization = require('../middlewares/authorization');  //Roles middleware
 
 router.get("/getAll", controller.getAll);
