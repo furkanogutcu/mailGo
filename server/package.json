@@ -1,6 +1,6 @@
 {
   "name": "mailgo-server",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "",
   "main": "app.js",
   "scripts": {

@@ -6,6 +6,7 @@ const errorHandler = (error, req, res, next) => {
     res.json({
         error: {
             message: error.message || "Internal server error",
+            success: false,
             code: error.statusCode || httpStatus.INTERNAL_SERVER_ERROR
         }
     });
