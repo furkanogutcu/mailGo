@@ -14,11 +14,7 @@ const getAll = (req, res, next) => {
 };
 
 const getById = (req, res, next) => {
-    if (!req.params.userId) {
-        return next(new ApiError('User id is required', httpStatus.BAD_REQUEST));
-    }
-
-    service.getById(req.params.userId)
+    service.getById(req.params.id)
         .then((result) => {
             if (!result) {
                 return next(new ApiError('User not found', httpStatus.NOT_FOUND));

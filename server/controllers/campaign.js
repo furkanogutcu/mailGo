@@ -14,11 +14,7 @@ const getAll = (req, res, next) => {
 };
 
 const getById = (req, res, next) => {
-    if (!req.params.campaignId) {
-        return next(new ApiError('Campaign id is required', httpStatus.BAD_REQUEST));
-    }
-
-    service.getById(req.params.campaignId)
+    service.getById(req.params.id)
         .then((result) => {
             if (!result) {
                 return next(new ApiError('Campaign not found', httpStatus.NOT_FOUND));

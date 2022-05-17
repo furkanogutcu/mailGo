@@ -14,11 +14,7 @@ const getAll = (req, res, next) => {
 };
 
 const getById = (req, res, next) => {
-    if (!req.params.userRoleId) {
-        return next(new ApiError('User role id is required', httpStatus.BAD_REQUEST));
-    }
-
-    service.getById(req.params.userRoleId)
+    service.getById(req.params.id)
         .then((result) => {
             if (!result) {
                 return next(new ApiError('User role not found', httpStatus.NOT_FOUND));

@@ -14,11 +14,7 @@ const getAll = (req, res, next) => {
 };
 
 const getById = (req, res, next) => {
-    if (!req.params.subscriberId) {
-        return next(new ApiError('Subscriber id is required', httpStatus.BAD_REQUEST));
-    }
-
-    service.getById(req.params.subscriberId)
+    service.getById(req.params.id)
         .then((result) => {
             if (!result) {
                 return next(new ApiError('Subscriber not found', httpStatus.NOT_FOUND));
