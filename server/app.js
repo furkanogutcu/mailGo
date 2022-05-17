@@ -7,6 +7,7 @@ const loaders = require('./loaders');
 const routes = require('./routes');
 
 const authentication = require('./middlewares/authentication');
+const errorHandler = require('./middlewares/errorHandler');
 
 config();
 loaders();
@@ -27,6 +28,14 @@ app.use('/api/campaign', routes.campaignRoutes);
 app.use('/api/subscriber', routes.subscriberRoutes);
 app.use('/api/user', routes.userRoutes);
 app.use('/api/userrole', routes.userRoleRoutes);
+
+app.use((req, res, next) => {
+    const error = new Error('Route not found');
+    error.status = 404;
+    next(error);
+});
+
+app.use(errorHandler);
 
 const port = process.env.APP_PORT || 3000;
 app.listen(port, () => {
