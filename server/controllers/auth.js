@@ -4,8 +4,9 @@ const User = require('../models/user');
 const passwordHelper = require('../helpers/password');
 const jwtHelper = require('../helpers/jwt');
 const UserRole = require('../models/userRole');
+const ApiError = require('../responses/error/apiError');
 
-const register = (req, res) => {
+const register = (req, res, next) => {
     //Kullanıcı parolasını hashle
     req.body.password = passwordHelper.passwordToHash(req.body.password);
 
@@ -20,29 +21,25 @@ const register = (req, res) => {
     //Kullanıcıyı kaydet
     authService.register(user)
         .then((user) => {
-            createReturnUser(user)
+            return createReturnUser(user)
                 .then((user) => {
                     return res.status(httpStatus.CREATED).json(user);
-                }).catch(() => {
-                    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Internal server error' });
                 });
         }).catch((err) => {
-            return res.status(err.code || httpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message || 'Internal server error' });
+            return next(new ApiError(err?.message, err?.code));   //FIXME: Sistemle alakalı bilgi dönülüyor mu
         });
 };
 
-const login = (req, res) => {
+const login = (req, res, next) => {
     //Kullanıcıyı bul
     authService.login(req.body.email, req.body.password)
         .then((user) => {
-            createReturnUser(user)
+            return createReturnUser(user)
                 .then((user) => {
                     return res.status(httpStatus.OK).json(user);
-                }).catch(() => {
-                    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Internal server error' });
                 });
         }).catch((err) => {
-            return res.status(err.code || httpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message || 'Internal server error' });
+            return next(new ApiError(err?.message, err?.code));
         });
 };
 

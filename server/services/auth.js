@@ -8,7 +8,7 @@ const register = (user) => {
             return Promise.resolve(user);
         }).catch(err => {
             if (err.code === 11000) {
-                return Promise.reject({ code: httpStatus.CONFLICT, message: 'User already exists' });
+                return Promise.reject({ code: httpStatus.CONFLICT, message: 'Email already exists' });
             }
             return Promise.reject({ code: httpStatus.INTERNAL_SERVER_ERROR, message: 'Internal Server Error' });
         });
@@ -19,10 +19,10 @@ const login = (email, password) => {
         email: email
     }).then(user => {
         if (!user) {
-            return Promise.reject({ code: httpStatus.BAD_REQUEST, message: 'User not found' });
+            return Promise.reject({ code: httpStatus.BAD_REQUEST, message: 'Email or password is incorrect' });
         }
         if (!passwordHelper.validatePassword(password, user.password)) {
-            return Promise.reject({ code: httpStatus.BAD_REQUEST, message: 'Wrong password' });
+            return Promise.reject({ code: httpStatus.BAD_REQUEST, message: 'Email or password is incorrect' });
         }
         return Promise.resolve(user);
     });

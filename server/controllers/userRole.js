@@ -1,19 +1,20 @@
 const httpStatus = require('http-status');
 const UserRoleService = require('../services/userRole');
 const service = new UserRoleService();
+const ApiError = require('../responses/error/apiError');
 
-const getAll = (req, res) => {
+const getAll = (req, res, next) => {
     service.getAll()
         .then((result) => {
             res.status(httpStatus.OK).json(result);
         }).catch(() => {
-            res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Internal Server Error' });
+            return next(new ApiError());
         });
 };
 
-const getById = (req, res) => {
+const getById = (req, res, next) => {
     if (!req.params.userRoleId) {
-        return res.status(httpStatus.BAD_REQUEST).json({ message: 'User role id is required' });
+        return next(new ApiError('User role id is required', httpStatus.BAD_REQUEST));
     }
 
     service.getById(req.params.userRoleId)
@@ -24,42 +25,42 @@ const getById = (req, res) => {
 
             res.status(httpStatus.OK).json(result);
         }).catch(() => {
-            res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Internal Server Error' });
+            return next(new ApiError());
         });
 };
 
-const add = (req, res) => {
+const add = (req, res, next) => {
     service.create(req.body)
         .then((result) => {
             res.status(httpStatus.OK).json(result);
         }).catch(() => {
-            res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Internal Server Error' });
+            return next(new ApiError());
         });
 };
 
-const update = (req, res) => {
+const update = (req, res, next) => {
     service.update(req.body._id, req.body)
         .then((result) => {
             if (!result) {
-                return res.status(httpStatus.NOT_FOUND).json({ message: 'User role not found' });
+                return next(new ApiError('User role not found', httpStatus.NOT_FOUND));
             }
 
             res.status(httpStatus.OK).json(result);
         }).catch(() => {
-            res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Internal Server Error' });
+            return next(new ApiError());
         });
 };
 
-const deleteById = (req, res) => {
+const deleteById = (req, res, next) => {
     service.delete(req.body._id)
         .then((result) => {
             if (!result) {
-                return res.status(httpStatus.NOT_FOUND).json({ message: 'User role not found' });
+                return next(new ApiError('User role not found', httpStatus.NOT_FOUND));
             }
 
             res.status(httpStatus.OK).json({ message: 'User role deleted' });
         }).catch(() => {
-            res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Internal Server Error' });
+            return next(new ApiError());
         });
 };
 
