@@ -2,11 +2,12 @@ const httpStatus = require('http-status');
 const SubscriberService = require('../services/subscriber');
 const service = new SubscriberService();
 const ApiError = require('../responses/error/apiError');
+const ApiDataSuccess = require('../responses/success/apiDataSuccess');
 
 const getAll = (req, res, next) => {
     service.getAll()
         .then((result) => {
-            res.status(httpStatus.OK).json(result);
+            return ApiDataSuccess.send(res, result, 'Subscribers successfully retrieved', httpStatus.OK);
         }).catch(() => {
             return next(new ApiError());
         });
@@ -20,10 +21,10 @@ const getById = (req, res, next) => {
     service.getById(req.params.subscriberId)
         .then((result) => {
             if (!result) {
-                return res.status(httpStatus.OK).json({});
+                return next(new ApiError('Subscriber not found', httpStatus.NOT_FOUND));
             }
 
-            res.status(httpStatus.OK).json(result);
+            return ApiDataSuccess.send(res, result, 'Subscriber successfully retrieved', httpStatus.OK);
         }).catch(() => {
             return next(new ApiError());
         });
@@ -32,7 +33,7 @@ const getById = (req, res, next) => {
 const add = (req, res, next) => {
     service.create(req.body)
         .then((result) => {
-            res.status(httpStatus.OK).json(result);
+            return ApiDataSuccess.send(res, result, 'Subscriber successfully created', httpStatus.CREATED);
         }).catch(() => {
             return next(new ApiError());
         });
@@ -45,7 +46,7 @@ const update = (req, res, next) => {
                 return next(new ApiError('Subscriber not found', httpStatus.NOT_FOUND));
             }
 
-            res.status(httpStatus.OK).json(result);
+            return ApiDataSuccess.send(res, result, 'Subscriber successfully updated', httpStatus.OK);
         }).catch(() => {
             return next(new ApiError());
         });
@@ -58,7 +59,7 @@ const deleteById = (req, res, next) => {
                 return next(new ApiError('Subscriber not found', httpStatus.NOT_FOUND));
             }
 
-            res.status(httpStatus.OK).json({ message: 'Subscriber deleted' });
+            return ApiDataSuccess.send(res, result, 'Subscriber successfully deleted', httpStatus.OK);
         }).catch(() => {
             return next(new ApiError());
         });

@@ -5,6 +5,7 @@ const passwordHelper = require('../helpers/password');
 const jwtHelper = require('../helpers/jwt');
 const UserRole = require('../models/userRole');
 const ApiError = require('../responses/error/apiError');
+const ApiDataSuccess = require('../responses/success/apiDataSuccess');
 
 const register = (req, res, next) => {
     //Kullanıcı parolasını hashle
@@ -23,7 +24,7 @@ const register = (req, res, next) => {
         .then((user) => {
             return createReturnUser(user)
                 .then((user) => {
-                    return res.status(httpStatus.CREATED).json(user);
+                    return ApiDataSuccess.send(res, user, 'User successfully registered', httpStatus.CREATED);
                 });
         }).catch((err) => {
             return next(new ApiError(err?.message, err?.code));   //FIXME: Sistemle alakalı bilgi dönülüyor mu
@@ -36,7 +37,7 @@ const login = (req, res, next) => {
         .then((user) => {
             return createReturnUser(user)
                 .then((user) => {
-                    return res.status(httpStatus.OK).json(user);
+                    return ApiDataSuccess.send(res, user, 'User successfully logged in', httpStatus.OK);
                 });
         }).catch((err) => {
             return next(new ApiError(err?.message, err?.code));
@@ -44,21 +45,21 @@ const login = (req, res, next) => {
 };
 
 const createReturnUser = (user) => {
-    const tempUser = {
+    const tokenUserObject = {
         ...user.toObject()
     };
-    delete tempUser.password;
+    delete tokenUserObject.password;
 
     //Tüm kullanıcı rollerini getir ve token içerisine rol adlarını ekle
     return UserRole.find({ '_id': { $in: user.roles } })
         .then((roles) => {
-            tempUser.roles = roles.map((role) => role.name);
+            tokenUserObject.roles = roles.map((role) => role.name);
             return {
-                ...tempUser,
-                roles: tempUser.roles,
+                ...tokenUserObject,
+                roles: tokenUserObject.roles,
                 tokens: {
-                    access_token: jwtHelper.generateAccessToken(tempUser),
-                    refresh_token: jwtHelper.generateRefreshToken(tempUser)
+                    access_token: jwtHelper.generateAccessToken(tokenUserObject),
+                    refresh_token: jwtHelper.generateRefreshToken(tokenUserObject)
                 }
             };
         });
