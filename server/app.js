@@ -5,6 +5,7 @@ const config = require('./config');
 const loaders = require('./loaders');
 
 const routes = require('./routes');
+const cors = require('cors');
 
 const authentication = require('./middlewares/authentication');
 const errorHandler = require('./middlewares/errorHandler');
@@ -13,6 +14,9 @@ config();
 loaders();
 
 app.use(express.json());
+app.use(cors({
+    origin: process.env.CORS_ORIGIN
+}));
 
 app.use('/api/auth', routes.authRoutes);
 
