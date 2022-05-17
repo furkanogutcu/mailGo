@@ -12,7 +12,7 @@ const validate = (schema) => (req, res, next) => {
         return next(new ApiError(error.details[0]?.message, httpStatus.BAD_REQUEST));
     }
 
-    return next();
+    next();
 };
 
 module.exports = validate;
