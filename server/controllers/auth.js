@@ -55,8 +55,10 @@ const createReturnUser = (user) => {
         .then((roles) => {
             tokenUserObject.roles = roles.map((role) => role.name);
             return {
-                ...tokenUserObject,
-                roles: tokenUserObject.roles,
+                user: {
+                    ...tokenUserObject,
+                    roles: tokenUserObject.roles,
+                },
                 tokens: {
                     access_token: jwtHelper.generateAccessToken(tokenUserObject),
                     refresh_token: jwtHelper.generateRefreshToken(tokenUserObject)
