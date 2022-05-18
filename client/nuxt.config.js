@@ -16,6 +16,12 @@ export default {
     ]
   },
 
+  loading: { color: '#fd2254' },
+
+  router: {
+    middleware: ['auth']
+  },
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
   ],
@@ -38,8 +44,48 @@ export default {
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/toast',
+    '@nuxtjs/auth-next'
   ],
+
+  bootstrapVue: {
+    icons: true
+  },
+
+  toast: {
+    position: 'bottom-right',
+    duration: 3000,
+    keepOnHover: true,
+    closeOnSwipe: true,
+    theme: 'bubble',
+  },
+
+  auth: {
+    strategies: {
+      local: {
+        token: {
+          property: 'access_token',
+          global: true
+        },
+        user: {
+          property: 'user',
+          autoFetch: false
+        },
+        endpoints: {
+          logout: false,
+          user: false,
+          login: { url: 'auth/login', method: 'post' },
+        },
+      },
+    },
+    redirect: {
+      login: '/login', // Oturum açmak gerekirse kullanıcı bu yola yönlendirilecektir .
+      logout: '/login', // Oturumu kapattıktan sonra mevcut rota korunuyorsa, kullanıcı bu yola yönlendirilecektir .
+      home: '/', // Kullanıcı giriş yaptıktan sonra bu yola yönlendirilecektir
+      callback: '/', // Kullanıcı oturum açtıktan sonra kimlik sağlayıcı tarafından bu yola yönlendirilecektir
+    },
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {

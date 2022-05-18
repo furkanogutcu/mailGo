@@ -27,7 +27,7 @@ module.exports = {
     'comma-dangle': 0,
     'no-unused-vars': 'warn',
     'space-in-parens': 'off',
-    'computed-property-spacing': 'off'
-
+    'computed-property-spacing': 'off',
+    quotes: [1, 'single', { avoidEscape: true }]
   }
 };
