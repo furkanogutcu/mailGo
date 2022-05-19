@@ -2,18 +2,21 @@
     <div>
         <PageTitle :title="'Aboneliklerim'" :subtitle="'Kategori aboneliklerinizi yönetin'">
         </PageTitle>
+        <CategoriesComp></CategoriesComp>
     </div>
 </template>
 
 <script>
 import PageTitle from '~/components/pageTitle.vue';
+import CategoriesComp from '~/components/my-subscriptions/categoriesComp.vue';
 export default {
-    components: { PageTitle },
+    components: { PageTitle, CategoriesComp },
     data() {
         return {};
     },
     async fetch() {
         await this.$store.dispatch('fetchSubscriber');
+        await this.$store.dispatch('fetchCategories');
     },
     computed: {
         subscriber() {
