@@ -1,11 +1,11 @@
-const User = require('../models/user');
+const Subscriber = require('../models/subscriber');
 const passwordHelper = require('../helpers/password');
 const httpStatus = require('http-status');
 
-const register = (user) => {
-    return User.create(user)
-        .then(user => {
-            return Promise.resolve(user);
+const register = (subscriber) => {
+    return Subscriber.create(subscriber)
+        .then(subscriber => {
+            return Promise.resolve(subscriber);
         }).catch(err => {
             if (err.code === 11000) {
                 return Promise.reject({ code: httpStatus.CONFLICT, message: 'Email already exists' });
@@ -15,16 +15,16 @@ const register = (user) => {
 };
 
 const login = (email, password) => {
-    return User.findOne({
+    return Subscriber.findOne({
         email: email
-    }).then(user => {
-        if (!user) {
+    }).then(subscriber => {
+        if (!subscriber) {
             return Promise.reject({ code: httpStatus.BAD_REQUEST, message: 'Email or password is incorrect' });
         }
-        if (!passwordHelper.validatePassword(password, user.password)) {
+        if (!passwordHelper.validatePassword(password, subscriber.password)) {
             return Promise.reject({ code: httpStatus.BAD_REQUEST, message: 'Email or password is incorrect' });
         }
-        return Promise.resolve(user);
+        return Promise.resolve(subscriber);
     });
 };
 

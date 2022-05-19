@@ -20,15 +20,17 @@ const subscriberSchema = new Mongoose.Schema({
         minlength: 3,
         maxlength: 50,
     },
-    isSubscribed: {
-        type: Boolean,
-        default: false,
+    password: {
+        type: String,
         required: true,
+        minlength: 6,
+        maxlength: 100
     },
-    unSubscribedAt: {
-        type: Date,
-        required: false
-    },
+    roles: [{
+        type: Mongoose.Schema.Types.ObjectId,
+        ref: "UserRole",
+        required: true
+    }],
     analysis: {
         totalCampaignClicks: {
             type: Number,
@@ -36,7 +38,7 @@ const subscriberSchema = new Mongoose.Schema({
             required: true,
             min: 0
         },
-        totalNumberOfEmailSSent: {
+        totalNumberOfEmailSent: {
             type: Number,
             default: 0,
             required: true,
@@ -44,9 +46,15 @@ const subscriberSchema = new Mongoose.Schema({
         }
     },
     subscribedCategories: [{
-        type: Mongoose.Schema.Types.ObjectId,
-        ref: "Category",
-        required: true
+        category: {
+            type: Mongoose.Schema.Types.ObjectId,
+            ref: "Category",
+            required: true,
+        },
+        subscriptionDate: {
+            type: Date,
+            required: true
+        }
     }],
 }, { timestamps: true, versionKey: false });
 

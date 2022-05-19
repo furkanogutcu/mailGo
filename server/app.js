@@ -30,7 +30,6 @@ app.get('/', (req, res) => {
 app.use('/api/category', routes.categoryRoutes);
 app.use('/api/campaign', routes.campaignRoutes);
 app.use('/api/subscriber', routes.subscriberRoutes);
-app.use('/api/user', routes.userRoutes);
 app.use('/api/userrole', routes.userRoleRoutes);
 
 app.use((req, res, next) => {

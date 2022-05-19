@@ -3,7 +3,10 @@ const Repository = require('./repository/repository');
 
 class Campaign extends Repository {
     constructor() {
-        super(CampaignModel);
+        super(CampaignModel, {
+            path: 'category',
+            select: 'name description'
+        });
     }
 }
 

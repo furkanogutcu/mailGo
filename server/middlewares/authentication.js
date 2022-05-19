@@ -8,7 +8,7 @@ const authentication = (req, res, next) => {
 
     JWT.verify(token, process.env.JWT_ACCESS_SECRET, (err, data) => {
         if (err) return next(new ApiError('Invalid token', httpStatus.FORBIDDEN));
-        req.user = data.user;
+        req.subscriber = data.subscriber;
         next();
     });
 };

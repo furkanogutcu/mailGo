@@ -2,7 +2,7 @@ const httpStatus = require('http-status');
 const ApiError = require('../responses/error/apiError');
 
 const authorization = (...roles) => (req, res, next) => {
-    const userRoles = req.user.roles.map(role => role.toLowerCase());
+    const userRoles = req.subscriber.roles.map(role => role.toLowerCase());
     const acceptedRoles = roles.map(roleName => roleName.toLowerCase());
 
     //Kullanıcı rollerinde hiç kabul edilen rollerden birisi var mı?

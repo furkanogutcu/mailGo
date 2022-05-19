@@ -10,12 +10,12 @@ const getOptions = () => {
     };
 };
 
-const generateAccessToken = (user) => {
-    return JWT.sign({ user }, process.env.JWT_ACCESS_SECRET, getOptions());
+const generateAccessToken = (subscriber) => {
+    return JWT.sign({ subscriber }, process.env.JWT_ACCESS_SECRET, getOptions());
 };
 
-const generateRefreshToken = (user) => {
-    return JWT.sign({ user }, process.env.JWT_REFRESH_SECRET, getOptions());
+const generateRefreshToken = (subscriber) => {
+    return JWT.sign({ subscriber }, process.env.JWT_REFRESH_SECRET, getOptions());
 };
 
 module.exports = {

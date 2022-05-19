@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const authService = require('../services/auth');
-const User = require('../models/user');
+const Subscriber = require('../models/subscriber');
 const passwordHelper = require('../helpers/password');
 const jwtHelper = require('../helpers/jwt');
 const UserRole = require('../models/userRole');
@@ -12,7 +12,7 @@ const register = (req, res, next) => {
     req.body.password = passwordHelper.passwordToHash(req.body.password);
 
     //Kullanıcıyı oluştur
-    const user = new User({
+    const subscriber = new Subscriber({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
@@ -20,11 +20,11 @@ const register = (req, res, next) => {
     });
 
     //Kullanıcıyı kaydet
-    authService.register(user)
-        .then((user) => {
-            return createReturnUser(user)
-                .then((user) => {
-                    return ApiDataSuccess.send(res, user, 'User successfully registered', httpStatus.CREATED);
+    authService.register(subscriber)
+        .then((subscriber) => {
+            return createReturnSubscriber(subscriber)
+                .then((subscriber) => {
+                    return ApiDataSuccess.send(res, subscriber, 'Subscriber successfully registered', httpStatus.CREATED);
                 });
         }).catch((err) => {
             return next(new ApiError(err?.message, err?.code));   //FIXME: Sistemle alakalı bilgi dönülüyor mu
@@ -34,34 +34,33 @@ const register = (req, res, next) => {
 const login = (req, res, next) => {
     //Kullanıcıyı bul
     authService.login(req.body.email, req.body.password)
-        .then((user) => {
-            return createReturnUser(user)
-                .then((user) => {
-                    return ApiDataSuccess.send(res, user, 'User successfully logged in', httpStatus.OK);
+        .then((subscriber) => {
+            return createReturnSubscriber(subscriber)
+                .then((subscriber) => {
+                    return ApiDataSuccess.send(res, subscriber, 'Subscriber successfully logged in', httpStatus.OK);
                 });
         }).catch((err) => {
             return next(new ApiError(err?.message, err?.code));
         });
 };
 
-const createReturnUser = (user) => {
-    const tokenUserObject = {
-        ...user.toObject()
+const createReturnSubscriber = (subscriber) => {
+    const tokenSubscriberObject = {
+        ...subscriber.toObject()
     };
-    delete tokenUserObject.password;
-
+    delete tokenSubscriberObject.password;
     //Tüm kullanıcı rollerini getir ve token içerisine rol adlarını ekle
-    return UserRole.find({ '_id': { $in: user.roles } })
+    return UserRole.find({ '_id': { $in: subscriber.roles } })
         .then((roles) => {
-            tokenUserObject.roles = roles.map((role) => role.name);
+            tokenSubscriberObject.roles = roles.map((role) => role.name);
             return {
-                user: {
-                    ...tokenUserObject,
-                    roles: tokenUserObject.roles,
+                subscriber: {
+                    ...tokenSubscriberObject,
+                    roles: tokenSubscriberObject.roles,
                 },
                 tokens: {
-                    access_token: jwtHelper.generateAccessToken(tokenUserObject),
-                    refresh_token: jwtHelper.generateRefreshToken(tokenUserObject)
+                    access_token: jwtHelper.generateAccessToken(tokenSubscriberObject),
+                    refresh_token: jwtHelper.generateRefreshToken(tokenSubscriberObject)
                 }
             };
         });
