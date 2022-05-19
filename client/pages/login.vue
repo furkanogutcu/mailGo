@@ -32,6 +32,7 @@ import { validate } from '../utilities/validator.js';
 export default {
     auth: false,
     components: { LogoNameComp },
+    middleware: ['unLoggedInCheck'],
     data() {
         return {
             loginUser: {
@@ -40,12 +41,6 @@ export default {
             },
             loginButtonDisabled: false,
         };
-    },
-    beforeCreate() {
-        // FIXME
-        if (this.$auth.loggedIn) {
-            this.$router.push('/dashboard');
-        }
     },
     mounted() {
         // FIXME - Ekranı ortalamak için
@@ -73,7 +68,6 @@ export default {
                 this.loginUser.email = '';
                 this.loginUser.password = '';
                 await this.$auth.setUserToken(response.data.data.tokens.access_token, undefined);
-                this.$store.dispatch('setUser');
                 this.$toast.success('Giriş başarılı. Panele yönlendiriliyorsunuz...', {
                     onComplete: () => {
                         return this.$router.push('/dashboard');
@@ -84,7 +78,7 @@ export default {
                 const errorMessage = err?.response?.data?.error?.message || err.message;
                 this.$toast.error(errorMessage);
                 this.loginButtonDisabled = false;
-                this.$store.dispatch('deleteUser');
+                this.$store.dispatch('deleteSubscriber');
             }
         }
     }

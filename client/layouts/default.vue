@@ -30,5 +30,6 @@ export default {
 
 .global-content {
     background: #efeff1;
+    padding: 3rem;
 }
 </style>

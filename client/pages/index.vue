@@ -1,6 +1,3 @@
-<!-- eslint-disable vue/html-closing-bracket-newline */-->
-<!-- eslint-disable vue/first-attribute-linebreak */-->
-<!-- eslint-disable vue/max-attributes-per-line */-->
 <template>
     <div>
         <div class="box">
