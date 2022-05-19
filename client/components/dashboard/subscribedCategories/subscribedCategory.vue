@@ -1,10 +1,6 @@
 <!-- eslint-disable vue/no-parsing-error -->
 <!-- eslint-disable vue/first-attribute-linebreak -->
 
-<!-- <h3>{{ data.category.name }}</h3>
-<h3>{{ data.category.createdAt }}</h3>
-<h3>{{ data.subscriptionDate }}</h3> -->
-
 <template>
     <div class="subscribed-category">
         <div class="row category d-block text-center">

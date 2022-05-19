@@ -4,7 +4,7 @@
             <div class="col-2 global-menu">
                 <MenuComp></MenuComp>
             </div>
-            <div class="col-10 global-content">
+            <div class="col-10 global-content" style="overflow-y: scroll; height: 100vh;">
                 <Nuxt />
             </div>
         </div>
