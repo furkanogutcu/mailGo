@@ -10,6 +10,7 @@ router.get("/get", controller.getWithToken);
 router.get("/getAll", authorization("Admin"), controller.getAll);
 router.get("/getById/:id", authorization("Admin"), mongodbIdChecker, authorization("Admin"), controller.getById);
 router.route("/subscribe").post(validate(schemas.subscribeValidation), controller.subscribeCategoriesWithToken);
+router.route("/unsubscribe").post(validate(schemas.unSubscribeValidation), controller.unSubscribeCategoriesWithToken);
 router.route("/add").post(authorization("Admin"), validate(schemas.addValidation), controller.add);
 router.route("/update").post(authorization("Admin"), validate(schemas.updateValidation), controller.update);
 router.route("/delete").post(authorization("Admin"), validate(schemas.deleteValidation), controller.deleteById);

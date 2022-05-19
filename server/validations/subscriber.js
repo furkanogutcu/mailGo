@@ -42,12 +42,17 @@ const deleteValidation = Joi.object({
 });
 
 const subscribeValidation = Joi.object({
-    categories: Joi.array().items(Joi.string()).required()
+    categories: Joi.array().items(Joi.string().required()).required()
+});
+
+const unSubscribeValidation = Joi.object({
+    categories: Joi.array().items(Joi.string().required()).required()
 });
 
 module.exports = {
     addValidation,
     updateValidation,
     deleteValidation,
-    subscribeValidation
+    subscribeValidation,
+    unSubscribeValidation
 };

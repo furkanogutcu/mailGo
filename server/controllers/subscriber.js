@@ -44,42 +44,75 @@ class Subscriber extends Repository {
             }
 
             //Abone olunmak istenen tüm kategoriler veritabanında varsa aboneyi veritabanından getir
-            service.getById(req.subscriber._id).then((subscriber) => {
+            service.getById(req.subscriber._id)
+                .then((subscriber) => {
 
-                //Abonenin sadece abone olduğu kategorileri al
-                const updatedSubscriber = {
-                    subscribedCategories: subscriber.subscribedCategories
-                };
+                    //Abonenin sadece abone olduğu kategorileri al
+                    const updatedSubscriber = {
+                        subscribedCategories: subscriber.subscribedCategories
+                    };
 
-                //İstekteki kategorileri al
-                const categories = req.body.categories;
+                    //İstekteki kategorileri al
+                    const categories = req.body.categories;
 
-                //Kullanıcı abone olmak istediği kategorilere daha önce abone olmuş mu kontrol et. Uygunsa abonelik için listeye ekle
-                categories.forEach(category => {
-                    if (!updatedSubscriber.subscribedCategories.some(subscribedCategory => subscribedCategory.category.toString() === category)) {
-                        updatedSubscriber.subscribedCategories.push({
-                            category: category,
-                            subscriptionDate: Date.now()
-                        });
-                    }
-                });
-
-                //Kullanıcının abonelik listesini güncelle
-                service.update(req.subscriber._id, updatedSubscriber)
-                    .then((subscriber) => {
-                        return ApiDataSuccess.send(res, subscriber, 'Subscriber successfully subscribed', httpStatus.OK);
-                    })
-                    .catch((error) => {
-                        console.log('GİRDİ');
-                        return next(new ApiError(error.message, error.code));
+                    //Kullanıcı abone olmak istediği kategorilere daha önce abone olmuş mu kontrol et. Uygunsa abonelik için listeye ekle
+                    categories.forEach(category => {
+                        if (!updatedSubscriber.subscribedCategories.some(subscribedCategory => subscribedCategory.category.toString() === category)) {
+                            updatedSubscriber.subscribedCategories.push({
+                                category: category,
+                                subscriptionDate: Date.now()
+                            });
+                        }
                     });
-            })
+
+                    //Kullanıcının abonelik listesini güncelle
+                    service.update(req.subscriber._id, updatedSubscriber)
+                        .then((subscriber) => {
+                            return ApiDataSuccess.send(res, subscriber, 'Subscriber successfully subscribed', httpStatus.OK);
+                        })
+                        .catch((error) => {
+                            return next(new ApiError(error.message, error.code));
+                        });
+                })
                 .catch(() => {
                     return next(new ApiError());
                 });
         }).catch(() => {
             return next(new ApiError());
         });
+    };
+
+    unSubscribeCategoriesWithToken = (req, res, next) => {
+        //Aboneyi veritabanından getir
+        service.getById(req.subscriber._id)
+            .then((subscriber) => {
+                const unSubscribeCategories = req.body.categories;
+
+                //Kullanıcının abonelik listesini yeni obje haline getir
+                const updatedSubscriber = {
+                    subscribedCategories: subscriber.subscribedCategories
+                };
+
+                //Kullanıcının abonelik listesinden istenen kategorileri sil
+                unSubscribeCategories.forEach(unSubscribeCategory => {
+                    const index = updatedSubscriber.subscribedCategories.findIndex(s => s.category._id.toString() === unSubscribeCategory);
+                    if (index !== -1) {
+                        updatedSubscriber.subscribedCategories.splice(index, 1);
+                    }
+                });
+
+                //Kullanıcının abonelik listesini güncelle
+                service.update(req.subscriber._id, updatedSubscriber)
+                    .then((response) => {
+                        return ApiDataSuccess.send(res, response, 'Subscriber successfully unsubscribed', httpStatus.OK);
+                    })
+                    .catch((error) => {
+                        return next(new ApiError(error.message, error.code));
+                    });
+            })
+            .catch(() => {
+                return next(new ApiError());
+            });
     };
 }
 
