@@ -51,8 +51,6 @@ export default {
         document.body.style['justify-content'] = 'default';
         document.body.style['align-items'] = 'default';
         document.body.style.height = '100vh';
-        document.body.style['overflow-x'] = 'hidden';
-        document.body.style['overflow-y'] = 'hidden';
     },
 };
 </script>
