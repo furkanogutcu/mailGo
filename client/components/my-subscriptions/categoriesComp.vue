@@ -12,7 +12,8 @@
             </label>
         </div>
         <div class=" card-columns" style="column-count: 5;">
-            <div v-for="category in categories" :key="category._id" class="card text-center">
+            <div v-for="category in categories" :key="category._id" class="card text-center"
+                style="border-radius: 20px;">
                 <div class="card-body">
                     <h5 class="card-title">{{ category.name }}</h5>
                     <hr style="width: 100%">
