@@ -24,16 +24,16 @@ class Repository {
         return this.populate ? this.Model.findOne(query).populate(this.populate) : this.Model.findOne(query);
     }
 
-    create(item) {      //FIXME POPULATE
-        return this.Model.create(item);
+    create(item) {
+        return this.populate ? this.Model.create(item).populate(this.populate) : this.Model.create(item);
     }
 
-    update(id, item) {  //FIXME POPULATE
-        return this.Model.findByIdAndUpdate(id, item, { new: true });
+    update(id, item) {
+        return this.populate ? this.Model.findByIdAndUpdate(id, item, { new: true }).populate(this.populate) : this.Model.findByIdAndUpdate(id, item, { new: true });
     }
 
-    delete(id) {        //FIXME POPULATE
-        return this.Model.findByIdAndRemove(id);
+    delete(id) {
+        return this.populate ? this.Model.findByIdAndRemove(id).populate(this.populate) : this.Model.findByIdAndRemove(id);
     }
 }
 
