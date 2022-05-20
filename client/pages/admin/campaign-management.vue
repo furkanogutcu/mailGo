@@ -23,9 +23,9 @@
                         <th scope="col">Kampanya Adı</th>
                         <th scope="col">Kampanya Açıklaması</th>
                         <th scope="col">Kategorisi</th>
-                        <th scope="col">Toplam Gönderim</th>
+                        <th scope="col">Gönderilen Email</th>
                         <th scope="col">Toplam Tıklama</th>
-                        <th scope="col">Toplam Email Tıklama</th>
+                        <th scope="col">Email Tıklama</th>
                         <th scope="col">Oluşturulma Tarihi</th>
                         <th scope="col">Son Güncelleme Tarihi</th>
                         <th scope="col"></th>
@@ -46,7 +46,7 @@
                             <button @click="getEmailList(campaign)" class="btn btn-sm btn-warning btn-block">
                                 Mail Listesini İndir
                             </button>
-                            <button @click="sendEmail(campaign)" class="btn btn-sm btn-warning btn-block">
+                            <button @click="sendEmail(campaign)" class="btn btn-sm btn-success btn-block">
                                 Mail Gönder
                             </button>
                             <button class="btn btn-sm btn-primary btn-block"
@@ -138,6 +138,7 @@ export default {
                     _id: campaign._id,
                 });
                 if (result.data.success) {
+                    this.$store.dispatch('fetchCampaigns');
                     this.$toast.success(result.data.data + ' aboneye başarıyla mail gönderildi!');
                 } else {
                     this.$toast.error('Mail gönderilirken bir hata oluştu!');
