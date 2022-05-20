@@ -28,11 +28,11 @@
                 </thead>
                 <tbody class="category-table">
                     <tr v-for="(category, index) in categories" :key="category._id">
-                        <th scope="row">{{ index + 1 }}</th>
-                        <td>{{ category.name }}</td>
-                        <td>{{ category.description || '-' }}</td>
-                        <td>{{ new Date(category.createdAt).toLocaleString() }}</td>
-                        <td>{{ new Date(category.updatedAt).toLocaleString() }}</td>
+                        <th class="text-break" scope="row">{{ index + 1 }}</th>
+                        <td class="text-break">{{ category.name }}</td>
+                        <td class="text-break">{{ category.description || '-' }}</td>
+                        <td class="text-break">{{ new Date(category.createdAt).toLocaleString() }}</td>
+                        <td class="text-break">{{ new Date(category.updatedAt).toLocaleString() }}</td>
                         <td>
                             <button class="btn btn-sm btn-primary  btn-block"
                                 @click="$router.push({ path: '/admin/category/update', query: { id: category._id } })">
@@ -62,9 +62,6 @@ export default {
     computed: {
         subscriber() {
             return this.$store.getters.getSubscriber;
-        },
-        activePage() {
-            return this.$store.getters.activePage;
         },
         categories() {
             return this.$store.getters.getCategories;

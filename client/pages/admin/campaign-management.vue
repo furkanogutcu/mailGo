@@ -33,15 +33,15 @@
                 </thead>
                 <tbody class="campaign-table">
                     <tr v-for="(campaign, index) in campaigns" :key="campaign._id">
-                        <th scope="row">{{ index + 1 }}</th>
-                        <td>{{ campaign.name }}</td>
-                        <td>{{ campaign.description || '-' }}</td>
-                        <td>{{ campaign.category.name || '-' }}</td>
-                        <td>{{ campaign.totalSent }}</td>
-                        <td>{{ campaign.totalClicks }}</td>
-                        <td>{{ campaign.emailClicks }}</td>
-                        <td>{{ new Date(campaign.createdAt).toLocaleString() }}</td>
-                        <td>{{ new Date(campaign.updatedAt).toLocaleString() }}</td>
+                        <th class="text-break" scope="row">{{ index + 1 }}</th>
+                        <td class="text-break">{{ campaign.name }}</td>
+                        <td class="text-break">{{ campaign.description || '-' }}</td>
+                        <td class="text-break">{{ campaign.category.name || '-' }}</td>
+                        <td class="text-break">{{ campaign.totalSent }}</td>
+                        <td class="text-break">{{ campaign.totalClicks }}</td>
+                        <td class="text-break">{{ campaign.emailClicks }}</td>
+                        <td class="text-break">{{ new Date(campaign.createdAt).toLocaleString() }}</td>
+                        <td class="text-break">{{ new Date(campaign.updatedAt).toLocaleString() }}</td>
                         <td>
                             <button class="btn btn-sm btn-warning btn-block">
                                 Mail Listesini Al
@@ -73,9 +73,6 @@ export default {
     computed: {
         subscriber() {
             return this.$store.getters.getSubscriber;
-        },
-        activePage() {
-            return this.$store.getters.activePage;
         },
         campaigns() {
             return this.$store.getters.getCampaigns;

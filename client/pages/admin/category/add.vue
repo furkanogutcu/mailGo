@@ -67,8 +67,6 @@ export default {
                 if (!response.data.success) {
                     throw new Error(response.data.message);
                 }
-                this.category.name = '';
-                this.category.description = '';
                 this.$toast.success('Kategori başarıyla eklendi!');
                 this.$router.push('/admin/category-management');
                 this.buttonDisabled = false;

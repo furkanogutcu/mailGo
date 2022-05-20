@@ -6,6 +6,8 @@ export const MUTATIONS = {
     SUBSCRIBE_CATEGORY: 'SUBSCRIBE_CATEGORY',
     UNSUBSCRIBE_CATEGORY: 'UNSUBSCRIBE_CATEGORY',
     SET_CAMPAIGNS: 'SET_CAMPAIGNS',
+    SET_ALL_SUBSCRIBERS: 'SET_ALL_SUBSCRIBERS',
+    SET_ROLES: 'SET_ROLES',
 };
 
 export const state = () => ({
@@ -26,6 +28,8 @@ export const state = () => ({
     activePage: null,
     categories: [],
     campaigns: [],
+    allSubscribers: [],
+    roles: [],
 });
 
 export const getters = {
@@ -33,6 +37,14 @@ export const getters = {
     activePage: state => state.activePage,
     getCategories: state => state.categories,
     getCampaigns: state => state.campaigns,
+    getAllSubscribers: state => state.allSubscribers
+        // Adminleri filtrele
+        .filter(subscriber => !subscriber.roles.some(r => r.name.toLowerCase() === 'admin'))
+        .map(subscriber => ({
+            ...subscriber,
+            fullName: `${subscriber.firstName.toUpperCase()} ${subscriber.lastName.toUpperCase()}`
+        })),
+    getRoles: state => state.roles,
 };
 
 export const mutations = {
@@ -63,6 +75,12 @@ export const mutations = {
     },
     [MUTATIONS.SET_CAMPAIGNS](state, campaigns) {
         state.campaigns = campaigns;
+    },
+    [MUTATIONS.SET_ALL_SUBSCRIBERS](state, subscribers) {
+        state.allSubscribers = subscribers;
+    },
+    [MUTATIONS.SET_ROLES](state, roles) {
+        state.roles = roles;
     }
 };
 
@@ -105,6 +123,18 @@ export const actions = {
         const response = await this.$axios.$get('/campaign/getAll');
         if (response.success) {
             commit(MUTATIONS.SET_CAMPAIGNS, response.data);
+        }
+    },
+    async fetchAllSubscribers({ commit }) {
+        const response = await this.$axios.$get('/subscriber/getAll');
+        if (response.success) {
+            commit(MUTATIONS.SET_ALL_SUBSCRIBERS, response.data);
+        }
+    },
+    async fetchRoles({ commit }) {
+        const response = await this.$axios.$get('userrole/getAll');
+        if (response.success) {
+            commit(MUTATIONS.SET_ROLES, response.data);
         }
     }
 };
