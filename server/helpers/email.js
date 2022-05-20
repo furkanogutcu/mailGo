@@ -16,7 +16,7 @@ class EmailHelper {
         return this.#createTransporter().verify();
     }
 
-    sendHtmlEmail(to, subject, html) {
+    async sendHtmlEmail(to, subject, html) {
         const transporter = this.#createTransporter();
         return transporter.verify().then(() => {
             return new Promise((resolve, reject) => {
