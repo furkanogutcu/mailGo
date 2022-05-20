@@ -71,8 +71,12 @@ export default {
     },
     // FIXME
     async created() {
-        await this.$store.dispatch('fetchCampaigns');
-        await this.$store.dispatch('fetchCategories');
+        if (this.$store.getters.getCampaigns.length === 0) {
+            await this.$store.dispatch('fetchCampaigns');
+        }
+        if (this.$store.getters.getCategories.length === 0) {
+            await this.$store.dispatch('fetchCategories');
+        }
         this.campaign = this.$store.getters.getCampaigns.find(campaign => campaign._id === this.$route.query.id);
         if (this.campaign) {
             this.updatedCampaign = {

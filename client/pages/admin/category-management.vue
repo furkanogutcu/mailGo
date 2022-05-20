@@ -56,7 +56,7 @@ export default {
     components: { PageTitle },
     middleware: ['adminCheck'],
     async fetch() {
-        await this.$store.dispatch('fetchSubscriber');
+        // Admin kontrolünde abone getiriliyor.
         await this.$store.dispatch('fetchCategories');
     },
     computed: {

@@ -77,7 +77,9 @@ export default {
     },
     // FIXME
     async created() {
-        await this.$store.dispatch('fetchCampaigns');
+        if (this.$store.getters.getCampaigns.length === 0) {
+            await this.$store.dispatch('fetchCampaigns');
+        }
         this.campaign = this.$store.getters.getCampaigns.find(campaign => campaign._id === this.$route.query.id);
         if (!this.campaign) {
             this.$router.push('/dashboard');

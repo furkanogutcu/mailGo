@@ -32,7 +32,9 @@ export default {
         return {};
     },
     async fetch() {
-        await this.$store.dispatch('fetchSubscriber');
+        if (this.$store.getters.getSubscriber._id === '') {
+            await this.$store.dispatch('fetchSubscriber');
+        }
     },
     computed: {
         subscriber() {

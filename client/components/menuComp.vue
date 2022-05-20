@@ -70,7 +70,9 @@ import LogoNameComp from './logoNameComp.vue';
 export default {
     components: { LogoNameComp },
     async fetch() {
-        await this.$store.dispatch('fetchSubscriber');
+        if (this.$store.state.getters.getSubscriber._id === '') {
+            await this.$store.dispatch('getSubscriber');
+        }
     },
     computed: {
         subscriber() {

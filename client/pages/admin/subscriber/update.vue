@@ -72,9 +72,15 @@ export default {
     },
     // FIXME
     async created() {
-        await this.$store.dispatch('fetchAllSubscribers');
-        await this.$store.dispatch('fetchCategories');
-        await this.$store.dispatch('fetchRoles');
+        if (this.$store.getters.getAllSubscribers.length === 0) {
+            await this.$store.dispatch('fetchAllSubscribers');
+        }
+        if (this.$store.getters.getCategories.length === 0) {
+            await this.$store.dispatch('fetchAllRoles');
+        }
+        if (this.$store.getters.getAllRoles.length === 0) {
+            await this.$store.dispatch('fetchAllRoles');
+        }
         const result = this.$store.getters.getAllSubscribers.find(s => s._id === this.$route.query.id);
         if (result) {
             this.subscriber = {

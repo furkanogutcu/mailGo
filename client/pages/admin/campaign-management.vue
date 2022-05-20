@@ -72,7 +72,7 @@ export default {
     components: { PageTitle },
     middleware: ['adminCheck'],
     async fetch() {
-        await this.$store.dispatch('fetchSubscriber');
+        // Admin kontrolunda abone getiriliyor.
         await this.$store.dispatch('fetchCampaigns');
     },
     computed: {

@@ -49,7 +49,9 @@ export default {
     },
     // FIXME
     async created() {
-        await this.$store.dispatch('fetchCategories');
+        if (this.$store.getters.getCategories.length === 0) {
+            await this.$store.dispatch('getCategories');
+        }
         this.category = this.$store.getters.getCategories.find(category => category._id === this.$route.query.id);
         if (this.category) {
             this.updatedCategory = {

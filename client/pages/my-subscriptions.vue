@@ -15,8 +15,12 @@ export default {
         return {};
     },
     async fetch() {
-        await this.$store.dispatch('fetchSubscriber');
-        await this.$store.dispatch('fetchCategories');
+        if (this.$store.getters.getSubscriber._id === '') {
+            await this.$store.dispatch('fetchSubscriber');
+        }
+        if (this.$store.getters.getCategories.length === 0) {
+            await this.$store.dispatch('fetchCategories');
+        }
     },
     computed: {
         subscriber() {
