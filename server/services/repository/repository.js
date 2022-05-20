@@ -25,7 +25,8 @@ class Repository {
     }
 
     create(item) {
-        return this.populate ? this.Model.create(item).populate(this.populate) : this.Model.create(item);
+        const entity = new this.Model(item);
+        return this.populate ? entity.save().then(e => e.populate(this.populate)) : entity.save();
     }
 
     update(id, item) {
