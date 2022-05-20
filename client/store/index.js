@@ -8,6 +8,7 @@ export const MUTATIONS = {
     SET_CAMPAIGNS: 'SET_CAMPAIGNS',
     SET_ALL_SUBSCRIBERS: 'SET_ALL_SUBSCRIBERS',
     SET_ROLES: 'SET_ROLES',
+    REPLACE_CAMPAIGN: 'REPLACE_CAMPAIGN',
 };
 
 export const state = () => ({
@@ -86,6 +87,10 @@ export const mutations = {
     },
     [MUTATIONS.SET_ROLES](state, roles) {
         state.roles = roles;
+    },
+    [MUTATIONS.REPLACE_CAMPAIGN](state, campaign) {
+        const index = state.campaigns.findIndex(c => c._id === campaign._id);
+        state.campaigns.splice(index, 1, campaign);
     }
 };
 
@@ -141,5 +146,11 @@ export const actions = {
         if (response.success) {
             commit(MUTATIONS.SET_ROLES, response.data);
         }
-    }
+    },
+    async increaseCampaignClick({ commit }, campaignId) {
+        const response = await this.$axios.$get(`/campaign/increase-total-click/${campaignId}`);
+        if (response.success) {
+            commit(MUTATIONS.REPLACE_CAMPAIGN, response.data);
+        }
+    },
 };

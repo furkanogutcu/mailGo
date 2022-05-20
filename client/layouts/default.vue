@@ -23,6 +23,10 @@ export default {
 </script>
 
 <style>
+body {
+    word-wrap: break-word;
+}
+
 .global-menu {
     background: #f8f9fc;
     height: 100vh;
