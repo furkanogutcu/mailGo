@@ -19,36 +19,43 @@
                 </b-icon>
                 Profilim
             </b-button>
-            <b-button @click="changePage(3, '/my-subscriptions')"
-                class="d-flex justify-content-center align-items-center" :style="activePage == 3 ? 'background:#ded3ff;' :
+            <b-button @click="changePage(3, '/campaigns')" class="d-flex justify-content-center align-items-center"
+                :style="activePage == 3 ? 'background:#ded3ff;' :
+                'background:#f8f9fc;'">
+                <b-icon icon="percent" font-scale="1.5" class="mr-3" aria-hidden="true">
+                </b-icon>
+                Kampanyalar
+            </b-button>
+            <b-button @click="changePage(4, '/my-subscriptions')"
+                class="d-flex justify-content-center align-items-center" :style="activePage == 4 ? 'background:#ded3ff;' :
                 'background:#f8f9fc;'">
                 <b-icon icon="bookmark-fill" font-scale="1.5" class="mr-3" aria-hidden="true">
                 </b-icon>
                 Aboneliklerim
             </b-button>
             <hr width="80%" color="d0d2da" />
-            <b-button v-if="isAdmin()" @click="changePage(4, '/admin/category-management')"
-                class="d-flex justify-content-center align-items-center" :style="activePage == 4 ? 'background:#ded3ff;' :
+            <b-button v-if="isAdmin()" @click="changePage(5, '/admin/category-management')"
+                class="d-flex justify-content-center align-items-center" :style="activePage == 5 ? 'background:#ded3ff;' :
                 'background:#f8f9fc;'">
                 <b-icon icon="list-ul" font-scale="1.5" class="mr-3" aria-hidden="true">
                 </b-icon>
                 Kategori Yönetim
             </b-button>
-            <b-button v-if="isAdmin()" @click="changePage(5, '/admin/campaign-management')"
-                class="d-flex justify-content-center align-items-center" :style="activePage == 5 ? 'background:#ded3ff;' :
+            <b-button v-if="isAdmin()" @click="changePage(6, '/admin/campaign-management')"
+                class="d-flex justify-content-center align-items-center" :style="activePage == 6 ? 'background:#ded3ff;' :
                 'background:#f8f9fc;'">
                 <b-icon icon="percent" font-scale="1.5" class="mr-3" aria-hidden="true">
                 </b-icon>
                 Kampanya Yönetim
             </b-button>
-            <b-button v-if="isAdmin()" @click="changePage(6, '/admin/subscriber-management')"
-                class="d-flex justify-content-center align-items-center" :style="activePage == 6 ? 'background:#ded3ff;' :
+            <b-button v-if="isAdmin()" @click="changePage(7, '/admin/subscriber-management')"
+                class="d-flex justify-content-center align-items-center" :style="activePage == 7 ? 'background:#ded3ff;' :
                 'background:#f8f9fc;'">
                 <b-icon icon="people-fill" font-scale="1.5" class="mr-3" aria-hidden="true">
                 </b-icon>
                 Abone Yönetim
             </b-button>
-            <b-button @click="logout" class="d-flex justify-content-center align-items-center" :style="activePage == 7 ? 'background:#ded3ff;' :
+            <b-button @click="logout" class="d-flex justify-content-center align-items-center" :style="activePage == 8 ? 'background:#ded3ff;' :
             'background:#f8f9fc;'">
                 <b-icon icon="gear-fill" font-scale="1.5" class="mr-3" aria-hidden="true">
                 </b-icon>
@@ -101,7 +108,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 3vh;
+    gap: 2vh;
 }
 
 .buttons button {
