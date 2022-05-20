@@ -43,8 +43,11 @@
                         <td class="text-break">{{ new Date(campaign.createdAt).toLocaleString() }}</td>
                         <td class="text-break">{{ new Date(campaign.updatedAt).toLocaleString() }}</td>
                         <td>
-                            <button class="btn btn-sm btn-warning btn-block">
-                                Mail Listesini Al
+                            <button @click="getEmailList(campaign)" class="btn btn-sm btn-warning btn-block">
+                                Mail Listesini İndir
+                            </button>
+                            <button @click="sendEmail(campaign)" class="btn btn-sm btn-warning btn-block">
+                                Mail Gönder
                             </button>
                             <button class="btn btn-sm btn-primary btn-block"
                                 @click="$router.push({ path: '/admin/campaign/update', query: { id: campaign._id } })">
@@ -62,6 +65,8 @@
 </template>
 
 <script>
+import { Parser } from 'json2csv';
+import download from '../../utilities/file';
 import PageTitle from '~/components/pageTitle.vue';
 export default {
     components: { PageTitle },
@@ -102,6 +107,40 @@ export default {
                     this.$toast.success('Kampanya başarıyla silindi!');
                 } else {
                     this.$toast.error('Kampanya silinirken bir hata oluştu!');
+                }
+            }
+        },
+        async getEmailList(campaign) {
+            const result = await this.$axios.get('campaign/email/get-list/' + campaign._id, {
+                _id: campaign._id,
+            });
+            if (result.data.success) {
+                this.$toast.success('Mail listesi başarıyla alındı!');
+                const parser = new Parser({
+                    fields: ['email'],
+                });
+                const data = result.data.data.emails.map((email) => {
+                    return { email };
+                });
+                const csvData = parser.parse(data);
+                const fileName = campaign.name.replace(' ', '-').toLowerCase() + '-mail-listesi.csv';
+                download('text/csv', csvData, fileName);
+            } else {
+                this.$toast.error('Mail listesi alınırken bir hata oluştu!');
+            }
+        },
+        async sendEmail(campaign) {
+            const confirmResult = confirm(
+                `${campaign.name} kampanyasını ${campaign.category.name} kategorisine abone olan herkese mail olarak göndermeyi onaylıyor musunuz?`
+            );
+            if (confirmResult) {
+                const result = await this.$axios.get('campaign/email/send/' + campaign._id, {
+                    _id: campaign._id,
+                });
+                if (result.data.success) {
+                    this.$toast.success(result.data.data + ' aboneye başarıyla mail gönderildi!');
+                } else {
+                    this.$toast.error('Mail gönderilirken bir hata oluştu!');
                 }
             }
         },
