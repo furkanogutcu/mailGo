@@ -39,12 +39,16 @@ class EmailHelper {
     }
 
     createCampaignEmailContent(campaign) {
+        // Eğer ki uygulama domain'i düzgün yapılandırıldıysa yönlendirmeli link oluştur. Yoksa direkt kampanyanın linkini ver.
+        const targetLink = (process.env.APP_DOMAIN && process.env.APP_DOMAIN !== '')
+            ? `${process.env.APP_DOMAIN}/email/campaign/redirect/${campaign.id}`
+            : campaign.targetLink;
         return `
             <h1>${campaign.name}</h1>
             <hr width="100%">
             <h2>${campaign.description}</h2>
             <hr width="100%">
-            <a href="${campaign.targetLink}">Kampanyaya gitmek için tıklayınız</a>
+            <a href="${(targetLink.includes('http') || targetLink.includes('https') ? targetLink : 'https://' + targetLink)}">Kampanyaya gitmek için tıklayınız</a>
             <hr width="100%">
             <p><strong>Not:</strong> Bu maili ${campaign.category.name} kategorisine abone olduğunuz için aldınız.</p>
         `;
