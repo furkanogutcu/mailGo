@@ -63,7 +63,7 @@ class Campaign extends Repository {
                     // Kampanya için mail içeriği oluştur
                     const emailContent = emailHelper.createCampaignEmailContent(campaign);
 
-                    //Kampanya için herkese mail gönder
+                    // Kampanya için herkese mail gönder
                     let sended = 0;
                     subscriberList.forEach(subscriber => {
                         try {
@@ -74,7 +74,13 @@ class Campaign extends Repository {
                             // FIXME - Loglama eklenebilir
                         }
                     });
-                    return ApiDataSuccess.send(res, sended, `Campaign Email was successfully sent to ${sended} email addresses`, httpStatus.OK);
+
+                    // Kampanyanın toplam gönderilme sayisini arttır
+                    service.increaseTotalSend(campaignId, sended).then(() => {
+                        return ApiDataSuccess.send(res, sended, `Campaign Email was successfully sent to ${sended} email addresses`, httpStatus.OK);
+                    }).catch(() => {
+                        return ApiDataSuccess.send(res, sended, `Campaign Email was successfully sent to ${sended} email addresses. However, the total number of sent could not be increased.`, httpStatus.OK);
+                    });
                 }).catch(() => {
                     return next(new ApiError());
                 });

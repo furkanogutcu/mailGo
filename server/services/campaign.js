@@ -32,6 +32,18 @@ class Campaign extends Repository {
         });
         // FIXME - Populate'i tek bir noktadan al
     }
+
+    increaseTotalSend(id, sended) {
+        return CampaignModel.findByIdAndUpdate(id, {
+            $inc: {
+                totalSent: sended
+            }
+        }, { new: true }).populate({
+            path: 'category',
+            select: 'name description'
+        });
+        // FIXME - Populate'i tek bir noktadan al
+    }
 }
 
 module.exports = Campaign;
