@@ -7,60 +7,60 @@
             <LogoNameComp :color="'551fff'" :size="0.8"></LogoNameComp>
         </div>
         <div class="buttons d-flex justify-content-center mt-5">
-            <b-button @click="changePage(1, '/dashboard')" class="d-flex justify-content-center align-items-center"
+            <button @click="changePage(1, '/dashboard')" class="d-flex justify-content-center align-items-center"
                 :style="activePage === 1 ? 'background:#ded3ff;' : 'background:#f8f9fc;'">
                 <b-icon icon=" speedometer2" font-scale="1.5" class="mr-3" aria-hidden="true">
                 </b-icon>
                 Panelim
-            </b-button>
-            <b-button @click="changePage(2, '/profile')" class="d-flex justify-content-center align-items-center"
+            </button>
+            <button @click="changePage(2, '/profile')" class="d-flex justify-content-center align-items-center"
                 :style="activePage == 2 ? 'background:#ded3ff;' : 'background:#f8f9fc;'">
                 <b-icon icon="person-fill" font-scale="1.5" class="mr-3" aria-hidden="true">
                 </b-icon>
                 Profilim
-            </b-button>
-            <b-button @click="changePage(3, '/campaigns')" class="d-flex justify-content-center align-items-center"
+            </button>
+            <button @click="changePage(3, '/campaigns')" class="d-flex justify-content-center align-items-center"
                 :style="activePage == 3 ? 'background:#ded3ff;' :
                 'background:#f8f9fc;'">
                 <b-icon icon="percent" font-scale="1.5" class="mr-3" aria-hidden="true">
                 </b-icon>
                 Kampanyalar
-            </b-button>
-            <b-button @click="changePage(4, '/my-subscriptions')"
-                class="d-flex justify-content-center align-items-center" :style="activePage == 4 ? 'background:#ded3ff;' :
+            </button>
+            <button @click="changePage(4, '/my-subscriptions')" class="d-flex justify-content-center align-items-center"
+                :style="activePage == 4 ? 'background:#ded3ff;' :
                 'background:#f8f9fc;'">
                 <b-icon icon="bookmark-fill" font-scale="1.5" class="mr-3" aria-hidden="true">
                 </b-icon>
                 Aboneliklerim
-            </b-button>
+            </button>
             <hr width="80%" color="d0d2da" />
-            <b-button v-if="isAdmin()" @click="changePage(5, '/admin/category-management')"
+            <button v-if="isAdmin()" @click="changePage(5, '/admin/category-management')"
                 class="d-flex justify-content-center align-items-center" :style="activePage == 5 ? 'background:#ded3ff;' :
                 'background:#f8f9fc;'">
                 <b-icon icon="list-ul" font-scale="1.5" class="mr-3" aria-hidden="true">
                 </b-icon>
                 Kategori Yönetim
-            </b-button>
-            <b-button v-if="isAdmin()" @click="changePage(6, '/admin/campaign-management')"
+            </button>
+            <button v-if="isAdmin()" @click="changePage(6, '/admin/campaign-management')"
                 class="d-flex justify-content-center align-items-center" :style="activePage == 6 ? 'background:#ded3ff;' :
                 'background:#f8f9fc;'">
                 <b-icon icon="percent" font-scale="1.5" class="mr-3" aria-hidden="true">
                 </b-icon>
                 Kampanya Yönetim
-            </b-button>
-            <b-button v-if="isAdmin()" @click="changePage(7, '/admin/subscriber-management')"
+            </button>
+            <button v-if="isAdmin()" @click="changePage(7, '/admin/subscriber-management')"
                 class="d-flex justify-content-center align-items-center" :style="activePage == 7 ? 'background:#ded3ff;' :
                 'background:#f8f9fc;'">
                 <b-icon icon="people-fill" font-scale="1.5" class="mr-3" aria-hidden="true">
                 </b-icon>
                 Abone Yönetim
-            </b-button>
-            <b-button @click="logout" class="d-flex justify-content-center align-items-center" :style="activePage == 8 ? 'background:#ded3ff;' :
+            </button>
+            <button @click="logout" class="d-flex justify-content-center align-items-center" :style="activePage == 8 ? 'background:#ded3ff;' :
             'background:#f8f9fc;'">
                 <b-icon icon="gear-fill" font-scale="1.5" class="mr-3" aria-hidden="true">
                 </b-icon>
                 Çıkış Yap
-            </b-button>
+            </button>
         </div>
     </div>
 </template>
@@ -113,24 +113,15 @@ export default {
 
 .buttons button {
     padding: 1em;
-    background: #ded3ff;
     color: #551fff;
-    border: none;
     font-size: 18px;
     border-radius: 30px;
     font-weight: 500;
     width: 70%;
+    border: none;
 }
 
 .buttons button:hover {
-    background-color: #551fff;
     color: #ff6a00;
-}
-
-.buttons button:focus {
-    border: 0;
-    outline: 0;
-    box-shadow: none;
-    color: #551fff;
 }
 </style>
