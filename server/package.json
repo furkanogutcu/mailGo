@@ -1,6 +1,6 @@
 {
   "name": "mailgo-server",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "description": "",
   "main": "app.js",
   "scripts": {
@@ -20,6 +20,7 @@
     "http-status": "^1.5.2",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.3.3"
+    "mongoose": "^6.3.3",
+    "nodemailer": "^6.7.5"
   }
 }
