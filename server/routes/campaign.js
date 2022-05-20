@@ -8,6 +8,7 @@ const mongodbIdChecker = require('../middlewares/mongodbIdChecker');    // mongo
 
 router.get("/getAll", controller.getAll);
 router.get("/getById/:id", mongodbIdChecker, controller.getById);
+router.get("/increase-total-click/:id", mongodbIdChecker, controller.increaseTotalClick);
 router.route("/add").post(authorization("Admin"), validate(schemas.addValidation), controller.add);
 router.route("/update").post(authorization("Admin"), validate(schemas.updateValidation), controller.update);
 router.route("/delete").post(authorization("Admin"), validate(schemas.deleteValidation), controller.deleteById);
