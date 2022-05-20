@@ -78,8 +78,6 @@ class Campaign extends Repository {
                     // Kampanyanın toplam gönderilme sayisini arttır
                     service.increaseTotalSend(campaignId, sended).then(() => {
                         return ApiDataSuccess.send(res, sended, `Campaign Email was successfully sent to ${sended} email addresses`, httpStatus.OK);
-                    }).catch(() => {
-                        return ApiDataSuccess.send(res, sended, `Campaign Email was successfully sent to ${sended} email addresses. However, the total number of sent could not be increased.`, httpStatus.OK);
                     });
                 }).catch(() => {
                     return next(new ApiError());
@@ -101,10 +99,11 @@ class Campaign extends Repository {
             //Kampanyanın email tıklama sayısını bir arttır
             service.increaseEmailClick(campaignId)
                 .then(() => {
-                    return res.redirect(link);
-                })
-                .catch(() => {
-                    return res.redirect(link);
+                    //Kampanyanın toplam tıklama sayısını bir arttır
+                    service.increaseTotalClick(campaignId)
+                        .then(() => {
+                            return res.redirect(link);
+                        });
                 });
         }).catch(() => {
             return next(new ApiError('Campaign not found', httpStatus.NOT_FOUND));
