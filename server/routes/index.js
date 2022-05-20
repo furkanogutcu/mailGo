@@ -4,3 +4,4 @@ exports.campaignRoutes = require('./campaign');
 exports.subscriberRoutes = require('./subscriber');
 exports.userRoleRoutes = require('./userRole');
 exports.authRoutes = require('./auth');
+exports.campaignEmailRoutes = require('./campaignEmail');

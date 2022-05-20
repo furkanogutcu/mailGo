@@ -20,6 +20,18 @@ class Campaign extends Repository {
         });
         // FIXME - Populate'i tek bir noktadan al
     }
+
+    increaseEmailClick(id) {
+        return CampaignModel.findByIdAndUpdate(id, {
+            $inc: {
+                emailClicks: 1
+            }
+        }, { new: true }).populate({
+            path: 'category',
+            select: 'name description'
+        });
+        // FIXME - Populate'i tek bir noktadan al
+    }
 }
 
 module.exports = Campaign;

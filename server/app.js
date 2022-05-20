@@ -20,6 +20,8 @@ app.use(cors({
 
 app.use('/api/auth', routes.authRoutes);
 
+app.use('/email', routes.campaignEmailRoutes);
+
 //Global authentication middleware
 app.use('/api', authentication);
 

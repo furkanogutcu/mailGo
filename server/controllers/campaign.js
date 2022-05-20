@@ -85,6 +85,25 @@ class Campaign extends Repository {
             return next(new ApiError("Bu hizmet suanda devre disi", httpStatus.INTERNAL_SERVER_ERROR));
         });
     };
+
+    emailRedirect = (req, res, next) => {
+        const campaignId = req.params.id;
+
+        //Kampanyayı getir
+        service.getById(campaignId).then((campaign) => {
+            const link = (campaign.targetLink.includes('http://') || campaign.targetLink.includes('https://')) ? campaign.targetLink : `http://${campaign.targetLink}`;
+            //Kampanyanın email tıklama sayısını bir arttır
+            service.increaseEmailClick(campaignId)
+                .then(() => {
+                    return res.redirect(link);
+                })
+                .catch(() => {
+                    return res.redirect(link);
+                });
+        }).catch(() => {
+            return next(new ApiError('Campaign not found', httpStatus.NOT_FOUND));
+        });
+    };
 }
 
 module.exports = new Campaign(new CampaignService());
