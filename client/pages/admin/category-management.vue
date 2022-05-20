@@ -2,7 +2,7 @@
     <div>
         <div class="row">
             <div class="col-10">
-                <PageTitle :title="'Kategori yönetim'" :subtitle="'Sistemdeki kategorileri yönetin'">
+                <PageTitle :title="'Kategori Yönetim'" :subtitle="'Sistemdeki kategorileri yönetin'">
                 </PageTitle>
             </div>
             <div class="col-2  d-flex justify-content-end align-items-end">
@@ -23,10 +23,10 @@
                         <th scope="col">Kategori Açıklaması</th>
                         <th scope="col">Oluşturulma Tarihi</th>
                         <th scope="col">Son Güncelleme Tarihi</th>
-                        <th scope="col">Butonlar</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="category-table">
                     <tr v-for="(category, index) in categories" :key="category._id">
                         <th scope="row">{{ index + 1 }}</th>
                         <td>{{ category.name }}</td>
@@ -34,9 +34,13 @@
                         <td>{{ new Date(category.createdAt).toLocaleString() }}</td>
                         <td>{{ new Date(category.updatedAt).toLocaleString() }}</td>
                         <td>
-                            <button class="btn btn-sm btn-primary"
-                                @click="$router.push({ path: '/admin/category/update', query: { id: category._id } })">Düzenle</button>
-                            <button class="btn btn-sm btn-danger" @click="deleteCategory(category)">Sil</button>
+                            <button class="btn btn-sm btn-primary  btn-block"
+                                @click="$router.push({ path: '/admin/category/update', query: { id: category._id } })">
+                                Düzenle
+                            </button>
+                            <button class="btn btn-sm btn-danger  btn-block" @click="deleteCategory(category)">
+                                Sil
+                            </button>
                         </td>
                     </tr>
                 </tbody>
@@ -79,8 +83,6 @@ export default {
         document.body.style['overflow-y'] = 'hidden';
     },
     methods: {
-        editCategory(category) {
-        },
         async deleteCategory(category) {
             const confirmResult = confirm(category.name + ' kategorisini gerçekten silmek istiyor musunuz?');
             if (confirmResult) {
@@ -120,5 +122,13 @@ button.add-button {
 button.add-button:hover {
     background-color: #34990d;
     color: #ffffff;
+}
+
+.category-table td {
+    vertical-align: middle;
+}
+
+.category-table th {
+    vertical-align: middle;
 }
 </style>

@@ -5,7 +5,8 @@
     <div>
         <div class="row">
             <div class="col-10">
-                <PageTitle :title="'Kategori düzenle'" :subtitle="category.name + ' kategorisini düzenle'">
+                <PageTitle :title="'Kategori düzenle'"
+                    :subtitle="category.name == '' ? '' : category.name + ' kategorisini düzenle'">
                 </PageTitle>
             </div>
         </div>
@@ -13,13 +14,12 @@
         <div class="category-update-box">
             <div class="form-group">
                 <label for="categoryName">Kategori Adı</label>
-                <input type="text" class="form-control" id="categoryName" v-model="updatedCategory.name"
-                    placeholder="Kategori adını giriniz">
+                <input type="text" class="form-control" id="categoryName" v-model="updatedCategory.name">
             </div>
             <div class="form-group">
                 <label for="categoryDescription">Kategori Açıklaması</label>
-                <textarea class="form-control" id="categoryDescription" v-model="updatedCategory.description" rows="3"
-                    placeholder="Kategori açıklamasını giriniz"></textarea>
+                <textarea class="form-control" id="categoryDescription" v-model="updatedCategory.description"
+                    rows="3"></textarea>
             </div>
             <button @click="updateCategory(updatedCategory)" class="btn btn-primary"
                 :disabled="buttonDisabled">Güncelle</button>
@@ -36,7 +36,10 @@ export default {
     middleware: ['adminCheck'],
     data() {
         return {
-            category: null,
+            category: {
+                name: '',
+                description: ''
+            },
             updatedCategory: {
                 name: '',
                 description: ''
@@ -45,13 +48,19 @@ export default {
         };
     },
     // FIXME
-    created() {
+    async created() {
+        await this.$store.dispatch('fetchCategories');
         this.category = this.$store.getters.getCategories.find(category => category._id === this.$route.query.id);
-        this.updatedCategory = {
-            _id: this.category._id,
-            name: this.category.name,
-            description: this.category.description
-        };
+        if (this.category) {
+            this.updatedCategory = {
+                _id: this.category._id,
+                name: this.category.name,
+                description: this.category.description
+            };
+        } else {
+            this.$router.push('/admin/category-management');
+            this.$toast.error('Kategori bulunamadı');
+        }
     },
     mounted() {
         // FIXME - Ekran ortalamasını düzeltmek için
