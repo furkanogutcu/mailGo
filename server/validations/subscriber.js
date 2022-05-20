@@ -15,7 +15,7 @@ const addValidation = Joi.object({
         category: Joi.string().required(),
         subscriptionDate: Joi.date().required()
     })),
-    roles: Joi.array().items(Joi.string().required())
+    roles: Joi.array().items(Joi.string())
 });
 
 const updateValidation = Joi.object({
@@ -34,7 +34,7 @@ const updateValidation = Joi.object({
         category: Joi.string().required(),
         subscriptionDate: Joi.date().required()
     })),
-    roles: Joi.array().items(Joi.string().required())
+    roles: Joi.array().items(Joi.string())
 });
 
 const deleteValidation = Joi.object({
