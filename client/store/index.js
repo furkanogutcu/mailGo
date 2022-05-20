@@ -45,6 +45,11 @@ export const getters = {
             fullName: `${subscriber.firstName.toUpperCase()} ${subscriber.lastName.toUpperCase()}`
         })),
     getRoles: state => state.roles,
+    // Abonesi olduğum kampanyaları getir. Her bir kampanya bir kategoriye ait. Eğer ki abone o kategoriye abone ise, kampanyayı getir.
+    getSubscribedCampaigns: state =>
+        state.campaigns.filter(
+            campaign => state.subscriber.subscribedCategories.some(
+                subscribedCategory => subscribedCategory.category._id === campaign.category._id)),
 };
 
 export const mutations = {
