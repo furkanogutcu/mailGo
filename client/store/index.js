@@ -5,6 +5,7 @@ export const MUTATIONS = {
     SET_CATEGORIES: 'SET_CATEGORIES',
     SUBSCRIBE_CATEGORY: 'SUBSCRIBE_CATEGORY',
     UNSUBSCRIBE_CATEGORY: 'UNSUBSCRIBE_CATEGORY',
+    SET_CAMPAIGNS: 'SET_CAMPAIGNS',
 };
 
 export const state = () => ({
@@ -24,12 +25,14 @@ export const state = () => ({
     },
     activePage: null,
     categories: [],
+    campaigns: [],
 });
 
 export const getters = {
     getSubscriber: state => state.subscriber,
     activePage: state => state.activePage,
     getCategories: state => state.categories,
+    getCampaigns: state => state.campaigns,
 };
 
 export const mutations = {
@@ -57,6 +60,9 @@ export const mutations = {
     },
     [MUTATIONS.SET_CATEGORIES](state, categories) {
         state.categories = categories;
+    },
+    [MUTATIONS.SET_CAMPAIGNS](state, campaigns) {
+        state.campaigns = campaigns;
     }
 };
 
@@ -93,6 +99,12 @@ export const actions = {
         });
         if (response.success) {
             commit(MUTATIONS.SET_SUBSCRIBER, response.data);
+        }
+    },
+    async fetchCampaigns({ commit }) {
+        const response = await this.$axios.$get('/campaign/getAll');
+        if (response.success) {
+            commit(MUTATIONS.SET_CAMPAIGNS, response.data);
         }
     }
 };
