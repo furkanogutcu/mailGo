@@ -11,7 +11,10 @@
                     <hr style="width: 100%">
                     <p class="card-text">{{ campaign.description }}</p>
                     <p class="card-text campaign-button">
-                        <button class="detail">Detayları göster</button>
+                        <button @click="$router.push({ path: '/campaign/details', query: { id: campaign._id } })"
+                            class="detail">
+                            Detayları göster
+                        </button>
                     </p>
                 </div>
                 <div class="card-footer text-muted">
