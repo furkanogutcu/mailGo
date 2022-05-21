@@ -9,7 +9,7 @@
             </h3>
         </div>
         <hr width=" 100%" color="d0d2da" />
-        <div style="overflow-y: scroll; height: 60vh;">
+        <div style="overflow-y: auto; height: 60vh;">
             <SubscribedCategory v-for="data in subscriber.subscribedCategories" :data="data" :key="data._id">
             </SubscribedCategory>
         </div>

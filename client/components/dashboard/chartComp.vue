@@ -3,17 +3,70 @@
 <!-- eslint-disable vue/first-attribute-linebreak -->
 <template>
     <div class="chart">
-        <h1>GRAFİK ALANI</h1>
+        <client-only>
+            <line-chart v-if="isLoaded" :data="chartData" :options="chartOptions"></line-chart>
+        </client-only>
     </div>
 </template>
 
 <script>
 export default {
+    data() {
+        return {
+            isLoaded: false,
+            chartData: null,
+            chartOptions: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                        }
+                    }]
+                },
+                elements: {
+                    point: {
+                        radius: 0
+                    }
+                },
+                maintainAspectRatio: false,
+            }
+        };
+    },
     computed: {
         subscriber() {
             return this.$store.getters.getSubscriber;
         },
     },
+    async mounted() {
+        this.isLoaded = false;
+        try {
+            if (this.$store.getters.getSubscriber._id === '') {
+                await this.$store.dispatch('fetchSubscriber');
+            };
+            const subscriber = this.$store.getters.getSubscriber;
+            this.chartData = {
+                datasets: [
+                    {
+                        label: 'E-posta Gönderimleri',
+                        data: [0, subscriber.analysis.totalNumberOfEmailSent],
+                        backgroundColor: 'rgba(0, 183, 254, 0.2)',
+                        borderColor: 'rgba(0, 183, 254, 1)',
+                        borderWidth: 1,
+                    },
+                    {
+                        label: 'Kampanya Tıklamaları',
+                        data: [0, subscriber.analysis.totalCampaignClicks],
+                        backgroundColor: 'rgba(157, 0, 255, 0.2)',
+                        borderColor: 'rgba(120, 0, 255, 1)',
+                        borderWidth: 1,
+                    },
+                ]
+            };
+
+            this.isLoaded = true;
+        } catch {
+        }
+    }
 };
 </script>
 

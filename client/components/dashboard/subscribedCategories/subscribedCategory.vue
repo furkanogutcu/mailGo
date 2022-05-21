@@ -25,13 +25,13 @@ export default {
 
 <style scoped>
 .subscribed-category {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 60px;
+    padding-right: 60px;
     padding-bottom: 20px;
 }
 
 .subscribed-category .category {
-    background-color: #ded3ff;
+    background-color: #ffeddd;
     padding: 20px;
     border-radius: 10px;
 }

@@ -29,7 +29,7 @@
                             23 -10 14 862 -456z" />
                             </g>
                         </svg>
-                        <h1 style="font-weight:400;" :style="{ 'color': '#' + color, 'font-size': 50 * size + 'px' }">
+                        <h1 style="font-weight:400;">
                             mailGo</h1>
                     </div>
                 </div>

@@ -6,7 +6,6 @@
                 </PageTitle>
             </div>
             <div class="col-4">
-                <h4>Tarih seçici</h4>
             </div>
         </div>
         <div class="row mt-4">
