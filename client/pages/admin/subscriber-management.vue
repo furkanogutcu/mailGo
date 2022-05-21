@@ -1,11 +1,16 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-10">
+            <div class="col-8">
                 <PageTitle :title="'Abone Yönetim'" :subtitle="'Sistemdeki aboneleri yönetin'">
                 </PageTitle>
             </div>
-            <div class="col-2  d-flex justify-content-end align-items-end">
+            <div class="col-4  d-flex justify-content-end align-items-end process-buttons">
+                <button class="mb-4 mr-4 bulk-add-button" @click="$router.push('/admin/subscriber/bulk-add')">
+                    <b-icon icon="plus-circle-fill" aria-hidden="true">
+                    </b-icon>
+                    Toplu abone ekleme
+                </button>
                 <button class="mb-4 add-button" @click="$router.push('/admin/subscriber/add')">
                     <b-icon icon="plus-circle-fill" aria-hidden="true">
                     </b-icon>
@@ -107,19 +112,32 @@ export default {
     padding: 30px;
 }
 
-button.add-button {
+.process-buttons button {
     padding: 1em;
     font-size: 14px;
     border-radius: 10px;
     font-weight: 500;
     width: 100%;
     border: none;
+}
+
+.process-buttons button.add-button {
     background: #41c20e;
     color: #ffffff;
 }
 
-button.add-button:hover {
+.process-buttons button.add-button:hover {
     background-color: #34990d;
+    color: #ffffff;
+}
+
+.process-buttons button.bulk-add-button {
+    background: #ff6a00;
+    color: #ffffff;
+}
+
+.process-buttons button.bulk-add-button:hover {
+    background-color: #e25e00;
     color: #ffffff;
 }
 
