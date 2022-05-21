@@ -4,12 +4,10 @@
 <template>
     <div class="subscribed-categories">
         <div class="row text-center d-flex justify-content-center">
-            <h3 style="white-space: pre-line; color: #551fff">Abonesi olduğum
-                kategoriler
-            </h3>
+            <h3 style="white-space: pre-line;">Abonesi olduğum kategoriler</h3>
         </div>
         <hr width=" 100%" color="d0d2da" />
-        <div style="overflow-y: auto; height: 60vh;">
+        <div style="overflow-y: auto; height: 60vh;" class="mt-5">
             <SubscribedCategory v-for="data in subscriber.subscribedCategories" :data="data" :key="data._id">
             </SubscribedCategory>
         </div>

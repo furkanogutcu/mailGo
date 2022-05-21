@@ -10,12 +10,12 @@
                 </SummaryUnit>
             </div>
             <div class="col">
-                <SummaryUnit :icon="'envelope-fill'" :icon_color="'551fff'" :background_color="'f3f0ff'"
+                <SummaryUnit :icon="'envelope-fill'" :icon_color="'00b7fe'" :background_color="'f1fbff'"
                     :title="'Toplam alınan e-posta'" :data="subscriber.analysis.totalNumberOfEmailSent">
                 </SummaryUnit>
             </div>
             <div class="col">
-                <SummaryUnit :icon="'hand-index-fill'" :icon_color="'00b7fe'" :background_color="'f1fbff'"
+                <SummaryUnit :icon="'hand-index-fill'" :icon_color="'551fff'" :background_color="'f3f0ff'"
                     :title="'Toplam kampanya tıklama'" :data="subscriber.analysis.totalCampaignClicks"></SummaryUnit>
             </div>
         </div>

@@ -4,8 +4,9 @@
 <template>
     <div class="subscribed-category">
         <div class="row category d-block text-center">
-            <h4 class="d-block" style="color: #551fff">{{ data.category.name }}</h4>
-            <span class="d-block" style="color:#a287fa"><b>Abonelik tarihi:</b> {{ showDate(data.subscriptionDate)
+            <h5 class="d-block" style="color: #551fff">{{ data.category.name }}</h5>
+            <span class="d-block" style="color:#a287fa; font-size: 12px;"><b>Abonelik tarihi:</b> {{
+                    showDate(data.subscriptionDate)
             }}</span>
         </div>
     </div>
@@ -31,8 +32,8 @@ export default {
 }
 
 .subscribed-category .category {
-    background-color: #ffeddd;
+    background-color: #ddf4ff;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 20px;
 }
 </style>

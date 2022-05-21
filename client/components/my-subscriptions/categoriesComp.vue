@@ -3,32 +3,36 @@
 <!-- eslint-disable vue/first-attribute-linebreak -->
 <template>
     <div>
-        <div class="d-flex justify-content-end mb-2">
-            <h4 class="mr-3">Yalnızca aboneliklerimi göster</h4>
-            <label class="switch">
+        <div v-if="categories.length > 0">
+            <div class="d-flex justify-content-end mb-2">
+                <h4 class="mr-3">Yalnızca aboneliklerimi göster</h4>
+                <label class="switch">
 
-                <input type="checkbox" v-model="getOnlySubscribed">
-                <span class="slider round"></span>
-            </label>
-        </div>
-        <div class=" card-columns" style="column-count: 5;">
-            <div v-for="category in categories" :key="category._id" class="card text-center"
-                style="border-radius: 20px;">
-                <div class="card-body">
-                    <h5 class="card-title">{{ category.name }}</h5>
-                    <hr style="width: 100%">
-                    <p class="card-text">{{ category.description }}</p>
-                    <p class="card-text category-button">
-                        <button @click="unSubscribe(category)" class="unSubscribe"
-                            v-if="subscriber.subscribedCategories.some(c => c.category._id == category._id)">
-                            Abonelikten Çık</button>
-                        <button @click="subscribe(category)" class="subscribe" v-else>Abone ol</button>
-                    </p>
+                    <input type="checkbox" v-model="getOnlySubscribed">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class=" card-columns" style="column-count: 5;">
+                <div v-for="category in categories" :key="category._id" class="card text-center"
+                    style="border-radius: 20px;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ category.name }}</h5>
+                        <hr style="width: 100%">
+                        <p class="card-text">{{ category.description }}</p>
+                        <p class="card-text category-button">
+                            <button @click="unSubscribe(category)" class="unSubscribe"
+                                v-if="subscriber.subscribedCategories.some(c => c.category._id == category._id)">
+                                Abonelikten Çık</button>
+                            <button @click="subscribe(category)" class="subscribe" v-else>Abone ol</button>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
+        <div v-else class="not-found-category-box text-center">
+            <h4>Sistemde bir kategori bulunmamaktadır</h4>
+        </div>
     </div>
-
 </template>
 
 <script>
@@ -85,6 +89,12 @@ export default {
 .category-button button.unSubscribe:hover {
     background-color: #fd2254;
     color: #ffd3d3;
+}
+
+.not-found-category-box {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
 }
 
 /* Toogle Switch Start */

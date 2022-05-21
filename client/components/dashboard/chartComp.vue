@@ -4,7 +4,7 @@
 <template>
     <div class="chart">
         <client-only>
-            <line-chart v-if="isLoaded" :data="chartData" :options="chartOptions"></line-chart>
+            <line-chart v-if="isLoaded" :data="chartData" :options="chartOptions" :height="'500vh'"></line-chart>
         </client-only>
     </div>
 </template>
@@ -47,7 +47,7 @@ export default {
             this.chartData = {
                 datasets: [
                     {
-                        label: 'E-posta Gönderimleri',
+                        label: 'Alınan E-postalar',
                         data: [0, subscriber.analysis.totalNumberOfEmailSent],
                         backgroundColor: 'rgba(0, 183, 254, 0.2)',
                         borderColor: 'rgba(0, 183, 254, 1)',

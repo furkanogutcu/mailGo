@@ -70,7 +70,7 @@ export default {
         },
     },
     created() {
-        this.$store.dispatch('changePage', 7);
+        this.$store.dispatch('changePage', 6);
     },
     mounted() {
         // FIXME - Ekran ortalamasını düzeltmek için

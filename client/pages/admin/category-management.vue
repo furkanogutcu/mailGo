@@ -68,7 +68,7 @@ export default {
         },
     },
     created() {
-        this.$store.dispatch('changePage', 5);
+        this.$store.dispatch('changePage', 4);
     },
     mounted() {
         // FIXME - Ekran ortalamasını düzeltmek için

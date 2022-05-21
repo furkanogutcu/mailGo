@@ -3,24 +3,30 @@
 <!-- eslint-disable vue/first-attribute-linebreak -->
 <template>
     <div>
-        <div class="card-columns" style="column-count: 5;">
-            <div v-for="campaign in campaigns" :key="campaign._id" class="card text-center"
-                style="border-radius: 20px;">
-                <div class="card-body">
-                    <h5 class="card-title">{{ campaign.name }}</h5>
-                    <hr style="width: 100%">
-                    <p class="card-text">{{ campaign.description }}</p>
-                    <p class="card-text campaign-button">
-                        <button @click="$router.push({ path: '/campaign/details', query: { id: campaign._id } })"
-                            class="detail">
-                            Detayları göster
-                        </button>
-                    </p>
-                </div>
-                <div class="card-footer text-muted">
-                    <p class="card-text"><small><strong>Kategorisi: </strong>{{ campaign.category.name }}</small></p>
+        <div v-if="campaigns.length > 0">
+            <div class="card-columns" style="column-count: 5;">
+                <div v-for="campaign in campaigns" :key="campaign._id" class="card text-center"
+                    style="border-radius: 20px;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ campaign.name }}</h5>
+                        <hr style="width: 100%">
+                        <p class="card-text">{{ campaign.description }}</p>
+                        <p class="card-text campaign-button">
+                            <button @click="$router.push({ path: '/campaign/details', query: { id: campaign._id } })"
+                                class="detail">
+                                Detayları göster
+                            </button>
+                        </p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <p class="card-text"><small><strong>Kategorisi: </strong>{{ campaign.category.name }}</small>
+                        </p>
+                    </div>
                 </div>
             </div>
+        </div>
+        <div v-else class="not-found-campaigns-box text-center">
+            <h4>Sistemde bir kampanya bulunmamaktadır</h4>
         </div>
     </div>
 </template>
@@ -56,5 +62,11 @@ export default {
 .campaign-button button.detail:hover {
     background-color: #ff6a00;
     color: #ffdbc1;
+}
+
+.not-found-campaigns-box {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
 }
 </style>
