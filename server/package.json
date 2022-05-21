@@ -1,6 +1,6 @@
 {
   "name": "mailgo-server",
-  "version": "0.20.0",
+  "version": "0.21.0",
   "description": "",
   "main": "app.js",
   "scripts": {
@@ -13,6 +13,7 @@
     "nodemon": "^2.0.16"
   },
   "dependencies": {
+    "convert-excel-to-json": "^1.7.0",
     "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
     "csvtojson": "^2.0.10",

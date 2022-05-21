@@ -11,6 +11,7 @@ const schemas = require('../validations/subscriber');
 var generator = require('generate-password');
 const passwordHelper = require('../helpers/password');
 const emailHelper = require('../helpers/email');
+const excelToJson = require('convert-excel-to-json');
 
 class Subscriber extends Repository {
     async getWithToken(req, res, next) {
@@ -125,6 +126,28 @@ class Subscriber extends Repository {
             const jsonData = await csvtojson().fromString(file.data.toString());
             await Subscriber.#bulkAddWithJson(res, jsonData);
         }
+
+        // Eğer xls veya xlss dosyası ise
+        if (file.mimetype === 'application/vnd.ms-excel' || file.mimetype === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+            const xlsData = await excelToJson({
+                source: file.data,
+                columnToKey: {
+                    A: 'firstName',
+                    B: 'lastName',
+                    C: 'email',
+                    D: 'password',
+                }
+            });
+
+            // xlsData verisini json verisine dönüştür
+            const json = [];
+            const keys = Object.keys(xlsData);
+            keys.forEach(key => {
+                json.push(xlsData[key][1]);
+            });
+
+            await Subscriber.#bulkAddWithJson(res, json);
+        }
     }
 
     static async #bulkAddWithJson(res, json) {
@@ -132,23 +155,31 @@ class Subscriber extends Repository {
         const validRows = [];
         const emailPasswordList = [];
         for (const row of json) {
-            // Rastgele bir şifre oluştur
-            const password = generator.generate({
-                length: 20,
-                numbers: true,
-                uppercase: true,
-                lowercase: true,
-                strict: true,
-            });
+            if (!row.password) {
+                // Rastgele bir şifre oluştur
+                const password = generator.generate({
+                    length: 20,
+                    numbers: true,
+                    uppercase: true,
+                    lowercase: true,
+                    strict: true,
+                });
 
-            // Şifreyi hashle ve kayıta ekle                
-            row.password = passwordHelper.passwordToHash(password);
+                // Kayıta şifreyi ekle
+                row.password = password;
+            }
+
+            // Yalnızca sayılardan oluşan şifreler için
+            row.password = row.password.toString();
 
             // Kayıtı kontrol et
             const validationResult = schemas.bulkAddValidation.validate(row);
             if (!validationResult.error) {
+                emailPasswordList.push({ email: row.email, password: row.password });
+
+                // Şifreyi hashle ve kayıta ekle                
+                row.password = passwordHelper.passwordToHash(row.password);
                 validRows.push(row);
-                emailPasswordList.push({ email: row.email, password: password });
             }
         }
 
