@@ -78,7 +78,7 @@ export default {
         if (this.$store.getters.getCategories.length === 0) {
             await this.$store.dispatch('fetchAllRoles');
         }
-        if (this.$store.getters.getAllRoles.length === 0) {
+        if (this.$store.getters.getRoles.length === 0) {
             await this.$store.dispatch('fetchAllRoles');
         }
         const result = this.$store.getters.getAllSubscribers.find(s => s._id === this.$route.query.id);
