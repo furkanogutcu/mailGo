@@ -121,10 +121,15 @@ class Subscriber extends Repository {
 
         const file = req.files.file;
 
+        // Eğer ki dosya boyutu 20MB'dan büyükse hata döndür
+        if (file.size > 20971520) {
+            return next(new ApiError('Maximum file size allowed: 20MB', httpStatus.BAD_REQUEST));
+        }
+
         // Eğer csv dosyası ise
         if (file.mimetype === 'text/csv') {
             const jsonData = await csvtojson().fromString(file.data.toString());
-            await Subscriber.#bulkAddWithJson(res, jsonData);
+            return await Subscriber.#bulkAddWithJson(res, jsonData);
         }
 
         // Eğer xls veya xlss dosyası ise
@@ -146,8 +151,10 @@ class Subscriber extends Repository {
                 json.push(xlsData[key][1]);
             });
 
-            await Subscriber.#bulkAddWithJson(res, json);
+            return await Subscriber.#bulkAddWithJson(res, json);
         }
+
+        return next(new ApiError('File type not supported', httpStatus.BAD_REQUEST));
     }
 
     static async #bulkAddWithJson(res, json) {
