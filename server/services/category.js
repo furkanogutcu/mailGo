@@ -54,26 +54,3 @@ class Category extends Repository {
 
 
 module.exports = Category;
-
-/*
-const result = await SubscriberModel.find({
-            subscribedCategories: {
-                $elemMatch: {
-                    category: id
-                }
-            }
-        });
-*/
-
-
-
-/*
-.then(subscribers => {
-            return Promise.all(subscribers.map(subscriber => {
-                subscriber.subscribedCategories.pull(id);
-                return subscriber.save();
-            }));
-        }).then(() => {
-            return super.delete(id);
-        });
-*/

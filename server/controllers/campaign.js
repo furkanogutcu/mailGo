@@ -7,6 +7,7 @@ const ApiError = require("../responses/error/apiError");
 const service = new CampaignService();
 const subscriberService = new SubscriberService();
 const emailHelper = require("../helpers/email");
+const mongoose = require('mongoose');
 
 class Campaign extends Repository {
     async increaseTotalClick(req, res, next) {
@@ -15,6 +16,13 @@ class Campaign extends Repository {
         if (!campaignResult) {
             return next(new ApiError());
         }
+
+        // Kullanıcının toplam tıklama sayısını bir arttır
+        const subscriberResult = await subscriberService.increaseTotalClick(req.subscriber._id).catch(() => { });
+        if (!subscriberResult) {
+            return next(new ApiError());
+        }
+
         return ApiDataSuccess.send(res, campaignResult, 'Campaign total click increased', httpStatus.OK);
     }
 
@@ -73,15 +81,19 @@ class Campaign extends Repository {
             return next(new ApiError("Campaign subscribers not found", httpStatus.NOT_FOUND));
         }
 
-        // Kampanya için mail içeriği oluştur
-        const emailContent = emailHelper.createCampaignEmailContent(campaign);
-
         // Kampanya için herkese mail gönder
         let sended = 0;
         for (const subscriber of subscriberList) {
+
+            // Kampanya için mail içeriği oluştur
+            const emailContent = emailHelper.createCampaignEmailContent(campaign, subscriber);
+
             const result = emailHelper.sendHtmlEmail(subscriber.email, `${campaign.name} Kampanya Bilgilendirmesi`, emailContent).catch(() => { });
             if (result) {
                 sended++;
+
+                // Kullanıcının mail alma sayısını bir arttır
+                await subscriberService.increaseNumberOfEmailSent(subscriber._id).catch(() => { });
             }
         }
 
@@ -92,7 +104,13 @@ class Campaign extends Repository {
     }
 
     async emailRedirect(req, res, next) {
+        // Eğer ki isteğin parametrelerinde sid doğrulanmazsa
+        if (!mongoose.Types.ObjectId.isValid(req.params?.sid)) {
+            return next(new ApiError('Invalid Id', httpStatus.BAD_REQUEST));
+        }
+
         const campaignId = req.params.id;
+        const subscriberId = req.params.sid;
 
         // Kampanyayı getir
         const campaign = await service.getById(campaignId).catch(() => { });
@@ -108,6 +126,9 @@ class Campaign extends Repository {
 
         // Kampanyanın toplam tıklama sayısını bir arttır
         await service.increaseTotalClick(campaignId).catch(() => { });
+
+        // Kullanıcının tıklama sayısını bir arttır
+        await subscriberService.increaseTotalClick(subscriberId).catch(() => { });
 
         return res.redirect(link);
     }

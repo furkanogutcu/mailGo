@@ -3,6 +3,6 @@ const router = express.Router();
 const controller = require('../controllers/campaign');
 const mongodbIdChecker = require('../middlewares/mongodbIdChecker');    // mongodb id checker middleware
 
-router.get("/campaign/redirect/:id", mongodbIdChecker, controller.emailRedirect);
+router.get("/campaign/redirect/:id&:sid", mongodbIdChecker, controller.emailRedirect);
 
 module.exports = router;

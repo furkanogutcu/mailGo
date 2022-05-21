@@ -13,6 +13,41 @@ class Subscriber extends Repository {
             }
         }]);
     }
+
+    increaseNumberOfEmailSent(id) {
+        return SubscriberModel.findByIdAndUpdate(id, {
+            $inc: {
+                "analysis.totalNumberOfEmailSent": 1
+            }
+        }, { new: true }).populate([{
+            path: 'roles',
+            select: 'name'
+        }, {
+            path: 'subscribedCategories',
+            populate: {
+                path: 'category'
+            }
+        }]);
+        // FIXME - Populate'i tek bir noktadan al
+    }
+
+    increaseTotalClick(id) {
+        return SubscriberModel.findByIdAndUpdate(id, {
+            $inc: {
+                "analysis.totalCampaignClicks": 1
+            }
+        }, { new: true }).populate([{
+            path: 'roles',
+            select: 'name'
+        }, {
+            path: 'subscribedCategories',
+            populate: {
+                path: 'category'
+            }
+        }]);
+        // FIXME - Populate'i tek bir noktadan al
+    }
+
 }
 
 module.exports = Subscriber;

@@ -38,10 +38,10 @@ class EmailHelper {
         });
     }
 
-    createCampaignEmailContent(campaign) {
+    createCampaignEmailContent(campaign, subscriber) {
         // Eğer ki uygulama domain'i düzgün yapılandırıldıysa yönlendirmeli link oluştur. Yoksa direkt kampanyanın linkini ver.
         const targetLink = (process.env.APP_DOMAIN && process.env.APP_DOMAIN !== '')
-            ? `${process.env.APP_DOMAIN}/email/campaign/redirect/${campaign.id}`
+            ? `${process.env.APP_DOMAIN}/email/campaign/redirect/${campaign.id}&${subscriber._id}`
             : campaign.targetLink;
         return `
             <h1>${campaign.name}</h1>
