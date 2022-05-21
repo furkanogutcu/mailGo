@@ -48,6 +48,12 @@ class Subscriber extends Repository {
         // FIXME - Populate'i tek bir noktadan al
     }
 
+    bulkAddWithJson(json) {
+        return SubscriberModel.insertMany(json, {
+            ordered: false, // Hataları önemseme
+            new: true
+        });
+    }
 }
 
 module.exports = Subscriber;

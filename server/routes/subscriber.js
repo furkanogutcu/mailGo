@@ -12,6 +12,7 @@ router.get("/getById/:id", authorization("Admin"), mongodbIdChecker, authorizati
 router.route("/subscribe").post(validate(schemas.subscribeValidation), controller.subscribeCategoriesWithToken);
 router.route("/unsubscribe").post(validate(schemas.unSubscribeValidation), controller.unSubscribeCategoriesWithToken);
 router.route("/add").post(authorization("Admin"), validate(schemas.addValidation), controller.add);
+router.route("/bulk-add").post(authorization("Admin"), controller.bulkAdd);
 router.route("/update").post(authorization("Admin"), validate(schemas.updateValidation), controller.update);
 router.route("/delete").post(authorization("Admin"), validate(schemas.deleteValidation), controller.deleteById);
 

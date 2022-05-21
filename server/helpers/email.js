@@ -53,6 +53,19 @@ class EmailHelper {
             <p><strong>Not:</strong> Bu maili ${campaign.category.name} kategorisine abone olduğunuz için aldınız.</p>
         `;
     }
+
+    createRegisterEmailContent(email, password) {
+        return `
+            <h1>mailGo Hesabınız Başarıyla Oluşturuldu</h1>
+            <hr width="100%">
+            <h3>Kullanıcı bilgileriniz aşağıdadır</h3>
+            <hr width="100%">
+            <p>
+                <h3><strong>E-posta:</strong> ${email}</h3>
+                <h3><strong>Şifre:</strong> ${password}</h3>
+            </p>
+        `;
+    }
 }
 
 module.exports = new EmailHelper();

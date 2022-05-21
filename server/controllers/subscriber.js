@@ -6,6 +6,11 @@ const categoryService = new CategoryService();
 const ApiError = require("../responses/error/apiError");
 const ApiDataSuccess = require("../responses/success/apiDataSuccess");
 const httpStatus = require("http-status");
+const csvtojson = require("csvtojson");
+const schemas = require('../validations/subscriber');
+var generator = require('generate-password');
+const passwordHelper = require('../helpers/password');
+const emailHelper = require('../helpers/email');
 
 class Subscriber extends Repository {
     async getWithToken(req, res, next) {
@@ -106,6 +111,72 @@ class Subscriber extends Repository {
         }
 
         return ApiDataSuccess.send(res, result, 'Subscriber successfully unsubscribed', httpStatus.OK);
+    }
+
+    async bulkAdd(req, res, next) {
+        if (!req.files || Object.keys(req.files).length === 0) {
+            return next(new ApiError('No files were uploaded', httpStatus.BAD_REQUEST));
+        }
+
+        const file = req.files.file;
+
+        // Eğer csv dosyası ise
+        if (file.mimetype === 'text/csv') {
+            const jsonData = await csvtojson().fromString(file.data.toString());
+            await Subscriber.#bulkAddWithJson(res, jsonData);
+        }
+    }
+
+    static async #bulkAddWithJson(res, json) {
+        // Hata olmayan kayıtları al
+        const validRows = [];
+        const emailPasswordList = [];
+        for (const row of json) {
+            // Rastgele bir şifre oluştur
+            const password = generator.generate({
+                length: 20,
+                numbers: true,
+                uppercase: true,
+                lowercase: true,
+                strict: true,
+            });
+
+            // Şifreyi hashle ve kayıta ekle                
+            row.password = passwordHelper.passwordToHash(password);
+
+            // Kayıtı kontrol et
+            const validationResult = schemas.bulkAddValidation.validate(row);
+            if (!validationResult.error) {
+                validRows.push(row);
+                emailPasswordList.push({ email: row.email, password: password });
+            }
+        }
+
+        const addedEmails = [];
+        // Veritabanına kaydet
+        await service.bulkAddWithJson(validRows).then(result => {
+            // Kayıt işlemi başarılı olanları listeye ekle
+            for (const record of result) {
+                addedEmails.push(record.email);
+            }
+        }).catch(error => {
+            for (const record of error.insertedDocs) {
+                addedEmails.push(record.email);
+            }
+        });
+
+        // Sisteme eklenmiş olan yeni abonelere şifrelerini mail olarak gönder
+        if (emailPasswordList.length > 0 && addedEmails.length > 0) {
+            for (const email of addedEmails) {
+                const subscriber = emailPasswordList.find(s => s.email === email);
+                if (subscriber) {
+                    const content = emailHelper.createRegisterEmailContent(subscriber.email, subscriber.password);
+                    emailHelper.sendHtmlEmail(email, 'mailGo Hesabınız Oluşturuldu', content);
+                }
+            }
+        }
+
+        return ApiDataSuccess.send(res, addedEmails, `${addedEmails.length} of ${validRows.length} subscribers successfully added`, httpStatus.OK);
     }
 }
 

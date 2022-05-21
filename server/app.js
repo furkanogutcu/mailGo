@@ -1,4 +1,5 @@
 const express = require('express');
+const upload = require('express-fileupload');
 const app = express();
 
 const config = require('./config');
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(cors({
     origin: process.env.CORS_ORIGIN
 }));
+app.use(upload());
 
 app.use('/api/auth', routes.authRoutes);
 
