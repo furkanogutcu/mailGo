@@ -4,7 +4,7 @@
 <template>
     <div class="chart">
         <client-only>
-            <line-chart v-if="isLoaded" :data="chartData" :options="chartOptions" :height="'500vh'"></line-chart>
+            <line-chart v-if="isLoaded" :data="chartData" :options="chartOptions" :height="500"></line-chart>
         </client-only>
     </div>
 </template>

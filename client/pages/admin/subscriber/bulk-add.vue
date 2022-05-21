@@ -17,8 +17,10 @@
                 aria-label="File upload button for bulk subscriber upload" @change="handleFileUpload($event)" />
             <br>
             <br>
-            <p>Yalnızca <strong>.csv</strong> , <strong>.xls</strong> ve <strong>.xlsx</strong> dosyaları
-                yükleyebilirsiniz</p>
+            <p>
+                Yalnızca <strong>.csv</strong> , <strong>.xls</strong> ve <strong>.xlsx</strong> dosyaları
+                yükleyebilirsiniz
+            </p>
             <p>
                 <strong>Veri formatı:</strong> firstName, lastName, email, password
                 <br>('password' değeri girilmezse otomatik atanır)
