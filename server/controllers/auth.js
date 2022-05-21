@@ -20,14 +20,16 @@ const register = async (req, res, next) => {
     });
 
     //Kullanıcıyı kaydet
-    const registerResult = await authService.register(subscriber).catch(() => { });
+    const registerResult = await authService.register(subscriber).catch((error) => {
+        return next(new ApiError(error.message, error.statusCode));
+    });
     if (!registerResult) {
         return next(new ApiError('There was a problem registering the user', httpStatus.INTERNAL_SERVER_ERROR));
     }
 
     const returnSubscriber = await createReturnSubscriber(registerResult).catch(() => { });
     if (!returnSubscriber) {
-        return next(new ApiError('User registered but failed to fetch record', httpStatus.INTERNAL_SERVER_ERROR));
+        return next(new ApiError());
     }
 
     return ApiDataSuccess.send(res, returnSubscriber, 'Subscriber successfully registered', httpStatus.CREATED);
@@ -35,14 +37,16 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
     //Kullanıcıyı bul
-    const subscriber = await authService.login(req.body.email, req.body.password).catch(() => { });
+    const subscriber = await authService.login(req.body.email, req.body.password).catch((error) => {
+        return next(new ApiError(error.message, error.statusCode));
+    });
     if (!subscriber) {
         return next(new ApiError('There was a problem logging in', httpStatus.INTERNAL_SERVER_ERROR));
     }
 
     const returnSubscriber = await createReturnSubscriber(subscriber).catch(() => { });
     if (!returnSubscriber) {
-        return next(new ApiError('User logged in but failed to fetch record', httpStatus.INTERNAL_SERVER_ERROR));
+        return next(new ApiError());
     }
 
     return ApiDataSuccess.send(res, returnSubscriber, 'Subscriber successfully logged in', httpStatus.OK);

@@ -4,9 +4,7 @@ const addValidation = Joi.object({
     firstName: Joi.string().required().min(3).max(50),
     lastName: Joi.string().required().min(3).max(50),
     email: Joi.string().required().email().min(3).max(50),
-    password: Joi.string().required().min(6).max(100)
-        //https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
-        .pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,100}$')),
+    password: Joi.string().required().min(6).max(100),
     analysis: Joi.object({
         totalCampaignClicks: Joi.number().min(0),
         totalNumberOfEmailSent: Joi.number().min(0)
@@ -23,9 +21,7 @@ const updateValidation = Joi.object({
     firstName: Joi.string().min(3).max(50),
     lastName: Joi.string().min(3).max(50),
     email: Joi.string().min(3).email().max(50),
-    password: Joi.string().min(6).max(100)
-        //https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
-        .pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,100}$')),
+    password: Joi.string().min(6).max(100),
     analysis: Joi.object({
         totalCampaignClicks: Joi.number().min(0),
         totalNumberOfEmailSent: Joi.number().min(0)
@@ -49,10 +45,18 @@ const unSubscribeValidation = Joi.object({
     categories: Joi.array().items(Joi.string().required()).required()
 });
 
+const bulkAddValidation = Joi.object({
+    firstName: Joi.string().required().min(3).max(50),
+    lastName: Joi.string().required().min(3).max(50),
+    email: Joi.string().required().email().min(3).max(50),
+    password: Joi.string().required().min(6).max(100)
+});
+
 module.exports = {
     addValidation,
     updateValidation,
     deleteValidation,
     subscribeValidation,
-    unSubscribeValidation
+    unSubscribeValidation,
+    bulkAddValidation
 };
