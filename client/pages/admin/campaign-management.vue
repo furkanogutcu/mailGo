@@ -139,6 +139,7 @@ export default {
                 });
                 if (result.data.success) {
                     this.$store.dispatch('fetchCampaigns');
+                    this.$store.dispatch('fetchSubscriber');
                     this.$toast.success(result.data.data + ' aboneye başarıyla mail gönderildi!');
                 } else {
                     this.$toast.error('Mail gönderilirken bir hata oluştu!');
