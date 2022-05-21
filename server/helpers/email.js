@@ -34,6 +34,7 @@ class EmailHelper {
                 });
             });
         }).catch(() => {
+            console.log('There is a problem with the email transporter. Please check the e-mail configuration.');
             throw new Error('There is a problem with the email transporter');
         });
     }

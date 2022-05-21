@@ -209,7 +209,7 @@ class Subscriber extends Repository {
                 const subscriber = emailPasswordList.find(s => s.email === email);
                 if (subscriber) {
                     const content = emailHelper.createRegisterEmailContent(subscriber.email, subscriber.password);
-                    emailHelper.sendHtmlEmail(email, 'mailGo Hesabınız Oluşturuldu', content);
+                    emailHelper.sendHtmlEmail(email, 'mailGo Hesabınız Oluşturuldu', content).catch(() => { });
                 }
             }
         }

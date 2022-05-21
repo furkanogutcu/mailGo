@@ -11,11 +11,11 @@ const getOptions = () => {
 };
 
 const generateAccessToken = (subscriber) => {
-    return JWT.sign({ subscriber }, process.env.JWT_ACCESS_SECRET, getOptions());
+    return JWT.sign({ subscriber }, process.env.JWT_ACCESS_SECRET || 'mailgoJWTSECRETkey654321', getOptions());
 };
 
 const generateRefreshToken = (subscriber) => {
-    return JWT.sign({ subscriber }, process.env.JWT_REFRESH_SECRET, getOptions());
+    return JWT.sign({ subscriber }, process.env.JWT_REFRESH_SECRET || 'mailgoJWTSECRETkey654321', getOptions());
 };
 
 module.exports = {

@@ -20,11 +20,9 @@ const register = async (req, res, next) => {
     });
 
     //Kullanıcıyı kaydet
-    const registerResult = await authService.register(subscriber).catch((error) => {
-        return next(new ApiError(error.message, error.statusCode));
-    });
+    const registerResult = await authService.register(subscriber).catch(() => { });
     if (!registerResult) {
-        return next(new ApiError('There was a problem registering the user', httpStatus.INTERNAL_SERVER_ERROR));
+        return next(new ApiError('Email already exists', httpStatus.BAD_REQUEST));
     }
 
     const returnSubscriber = await createReturnSubscriber(registerResult).catch(() => { });
@@ -37,11 +35,9 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
     //Kullanıcıyı bul
-    const subscriber = await authService.login(req.body.email, req.body.password).catch((error) => {
-        return next(new ApiError(error.message, error.statusCode));
-    });
+    const subscriber = await authService.login(req.body.email, req.body.password).catch(() => { });
     if (!subscriber) {
-        return next(new ApiError('There was a problem logging in', httpStatus.INTERNAL_SERVER_ERROR));
+        return next(new ApiError('Email or password is incorrect', httpStatus.INTERNAL_SERVER_ERROR));
     }
 
     const returnSubscriber = await createReturnSubscriber(subscriber).catch(() => { });

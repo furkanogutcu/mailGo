@@ -1,7 +1,7 @@
 const CryptoJs = require('crypto-js');
 
 const passwordToHash = (plainPassword) => {
-    const hashedSalt = CryptoJs.HmacSHA1(plainPassword, process.env.PASSWORD_HASH);
+    const hashedSalt = CryptoJs.HmacSHA1(plainPassword, process.env.PASSWORD_HASH || 'mailGoSECRETsalt456789');
     return CryptoJs.HmacSHA256(plainPassword, hashedSalt).toString();
 };
 

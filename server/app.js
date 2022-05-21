@@ -16,7 +16,7 @@ loaders();
 
 app.use(express.json());
 app.use(cors({
-    origin: process.env.CORS_ORIGIN
+    origin: process.env.CORS_ORIGIN || '*'
 }));
 app.use(upload());
 
@@ -44,7 +44,7 @@ app.use((req, res, next) => {
 
 app.use(errorHandler);
 
-const port = process.env.APP_PORT || 3000;
+const port = process.env.APP_PORT || 5000;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
